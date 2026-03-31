@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TAKWEEN | Infrastructure Intelligence</title>
+<meta name="description" content="Data Centre Intelligence & Autonomous Robotics for the Kingdom of Saudi Arabia."/>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Tajawal:wght@400;700&display=swap" rel="stylesheet"/>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- CountUp -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.js"></script>
+
+<style>
+/* ─── RESET & TOKENS ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a0a0f;
+  --bg-dim:    #0e0e13;
+  --bg-low:    #111117;
+  --surface:   #16161d;
+  --surface-hi:#1c1c24;
+  --border:    rgba(201,168,76,0.12);
+  --gold:      #C9A84C;
+  --gold-dim:  rgba(201,168,76,0.35);
+  --white:     #F0EDE6;
+  --muted:     #6B6B7B;
+  --dim:       #3A3A4A;
+  --mono:      'IBM Plex Mono', monospace;
+  --arabic:    'Tajawal', sans-serif;
+  /* Display font stack — closest open-source to Söhne */
+  --display:   'Helvetica Neue', 'Arial Black', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--display);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── CUSTOM CURSOR ──────────────────────────────────── */
+#cursor {
+  width: 12px; height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+  mix-blend-mode: normal;
+}
+#cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid var(--gold-dim);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all 0.08s ease;
+}
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor { width: 24px; height: 24px; background: transparent; border: 1px solid var(--gold); }
+
+/* ─── TYPOGRAPHY HELPERS ────────────────────────────── */
+.mono { font-family: var(--mono); }
+.arabic { font-family: var(--arabic); direction: rtl; }
+.label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.display-xl {
+  font-size: clamp(56px, 9vw, 120px);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+.display-lg {
+  font-size: clamp(40px, 6vw, 84px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.display-md {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* ─── LAYOUT ─────────────────────────────────────────── */
+.container { max-width: 1400px; margin: 0 auto; padding: 0 64px; }
+@media (max-width: 768px) { .container { padding: 0 24px; } }
+
+/* ─── SCROLLBAR ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+.hide-scroll::-webkit-scrollbar { display: none; }
+.hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── NAV ────────────────────────────────────────────── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 28px 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: padding 0.4s ease, background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+  border-bottom: 1px solid transparent;
+}
+#nav.scrolled {
+  padding: 16px 64px;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-color: var(--border);
+}
+@media (max-width: 768px) { #nav { padding: 20px 24px; } #nav.scrolled { padding: 14px 24px; } }
+
+.nav-logo { display: flex; flex-direction: column; line-height: 1; }
+.nav-logo-en {
+  font-size: 20px; font-weight: 900;
+  letter-spacing: 0.14em; color: var(--gold);
+  text-transform: uppercase;
+}
+.nav-logo-ar { font-family: var(--arabic); font-size: 11px; color: var(--gold); opacity: 0.6; margin-top: 2px; direction: rtl; }
+
+.nav-links { display: flex; gap: 44px; }
+.nav-links a {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  transition: color 0.25s ease; position: relative; padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px; background: var(--gold); transform: scaleX(0);
+  transition: transform 0.25s ease;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+.nav-links a.active { color: var(--gold); }
+
+.nav-cta {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold);
+  border: 1px solid var(--gold); padding: 10px 20px;
+  background: transparent; cursor: none; text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.nav-cta:hover { background: var(--gold); color: #1a1200; }
+
+@media (max-width: 900px) { .nav-links { display: none; } }
+
+/* ─── HERO ───────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 64px 72px; position: relative; overflow: hidden;
+}
+@media (max-width: 768px) { #hero { padding: 0 24px 48px; } }
+
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrScX8Z1p4I0zUyF1ALofH1wrt-xZJ49MeJ-R7AiID6uYO1aFwbGBW30To6NB0knXjl8P8OKuXxS__4QapU9039XBPgxTUIoD3hilfAHR6h4jnw5rJWjknbhjDtzoNYNTLjNC6q-BzKPrMxTTRuqUqzQ_HhstJyRTYFv0NJzRGP8VH1EqJnCXH2bcCxpfEuSvzlsTHNKZybeJt1hUBqkkMJWSsCHELyKoHQ89FRCo8vUZht50UjGX4pP1-4FdvprrGtXCFTvVLUhs');
+  background-size: cover; background-position: center;
+  opacity: 0.18;
+}
+.hero-vignette {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to top, var(--bg) 0%, transparent 50%),
+              linear-gradient(to right, var(--bg) 0%, transparent 40%);
+}
+/* Animated grid overlay */
+.hero-grid {
+  position: absolute; inset: 0; z-index: 1;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  animation: gridDrift 20s ease-in-out infinite alternate;
+}
+@keyframes gridDrift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(-20px, -20px); }
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 1100px; }
+
+.hero-label { margin-bottom: 28px; opacity: 0; }
+.hero-word { display: inline-block; overflow: hidden; }
+.hero-word-inner { display: inline-block; transform: translateY(110%); }
+
+.hero-subtitle { font-size: clamp(16px, 2.2vw, 26px); font-weight: 300; color: var(--muted); max-width: 620px; margin: 28px 0 56px; opacity: 0; line-height: 1.5; }
+
+/* Stats */
+.stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; border-top: 1px solid var(--border); padding-top: 44px;
+  margin-bottom: 52px; opacity: 0;
+}
+@media (max-width: 640px) { .stats-row { grid-template-columns: repeat(2, 1fr); gap: 24px 0; } }
+.stat-item { padding-right: 32px; }
+.stat-num {
+  font-size: clamp(28px, 3.5vw, 44px); font-weight: 900; color: var(--gold);
+  line-height: 1; letter-spacing: -0.02em; margin-bottom: 6px;
+}
+.stat-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+
+/* CTAs */
+.hero-ctas { display: flex; gap: 48px; flex-wrap: wrap; opacity: 0; }
+.cta-link {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--white); text-decoration: none;
+  border-bottom: 1px solid var(--gold); padding-bottom: 4px;
+  display: inline-flex; align-items: center; gap: 12px;
+  transition: color 0.25s ease, gap 0.25s ease;
+}
+.cta-link:hover { color: var(--gold); gap: 20px; }
+.cta-link.secondary { border-color: transparent; color: var(--muted); }
+.cta-link.secondary:hover { color: var(--white); border-color: var(--dim); }
+.cta-arrow { display: inline-block; transition: transform 0.25s ease; font-size: 16px; }
+.cta-link:hover .cta-arrow { transform: translateX(6px); }
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute; bottom: 48px; right: 64px; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0;
+}
+@media (max-width: 768px) { .scroll-hint { display: none; } }
+.scroll-hint-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; }
+.scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+@keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(0.6)} }
+
+/* ─── TICKER ─────────────────────────────────────────── */
+#ticker {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 0; overflow: hidden; background: var(--bg-dim);
+  position: relative;
+}
+.ticker-track {
+  display: flex; white-space: nowrap;
+  animation: ticker 35s linear infinite;
+}
+#ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-item {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: rgba(240,237,230,0.3);
+  padding: 0 40px; display: flex; align-items: center; gap: 40px;
+}
+.ticker-dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; opacity: 0.6; }
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── SECTIONS COMMON ────────────────────────────────── */
+.section { padding: 120px 64px; }
+@media (max-width: 768px) { .section { padding: 80px 24px; } }
+.section-header { margin-bottom: 80px; }
+
+.reveal { opacity: 0; transform: translateY(60px); }
+
+/* ─── TWO PILLARS ────────────────────────────────────── */
+#pillars { background: var(--bg); }
+.pillar { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-bottom: 120px; }
+.pillar:last-child { margin-bottom: 0; }
+@media (max-width: 900px) { .pillar { grid-template-columns: 1fr; } }
+.pillar-reversed .pillar-image { order: -1; }
+@media (max-width: 900px) { .pillar-reversed .pillar-image { order: 0; } }
+
+.pillar-name { font-size: clamp(24px, 3vw, 36px); font-weight: 900; margin-bottom: 6px; text-transform: uppercase; letter-spacing: -0.01em; }
+.pillar-ar { font-family: var(--arabic); font-size: 18px; color: var(--gold); margin-bottom: 44px; direction: rtl; text-align: left; }
+.service-list { display: flex; flex-direction: column; gap: 0; }
+.service-item {
+  display: flex; align-items: center; gap: 28px;
+  border-bottom: 1px solid var(--border); padding: 18px 0;
+  transition: border-color 0.25s ease;
+}
+.service-item:hover { border-color: var(--gold-dim); }
+.service-num { font-family: var(--mono); font-size: 10px; color: var(--gold); letter-spacing: 0.1em; flex-shrink: 0; width: 24px; }
+.service-name { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white); }
+.service-desc { font-size: 12px; color: var(--muted); margin-left: auto; text-align: right; max-width: 220px; }
+
+.pillar-image { height: 600px; overflow: hidden; position: relative; }
+.pillar-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+.pillar-image:hover img { transform: scale(1.04); }
+
+/* ─── WHERE WE DEPLOY ────────────────────────────────── */
+#deploy { background: var(--bg-dim); overflow: hidden; padding: 120px 0; }
+#deploy .section-header { padding: 0 64px 0; }
+@media (max-width: 768px) { #deploy .section-header { padding: 0 24px; } }
+
+.deploy-scroll {
+  display: flex; gap: 3px; overflow-x: auto; padding: 0 64px; margin-top: 60px;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+}
+.deploy-scroll::-webkit-scrollbar { height: 2px; }
+.deploy-scroll::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+@media (max-width: 768px) { .deploy-scroll { padding: 0 24px; } }
+
+.deploy-card {
+  flex-shrink: 0; width: 320px; height: 480px; position: relative;
+  overflow: hidden; scroll-snap-align: start; cursor: none;
+}
+.deploy-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; filter: brightness(0.7); }
+.deploy-card:hover img { transform: scale(1.06); }
+.deploy-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,10,15,0.92) 0%, transparent 50%);
+}
+.deploy-info { position: absolute; bottom: 28px; left: 28px; z-index: 2; }
+.deploy-ar { font-family: var(--arabic); font-size: 11px; color: var(--gold); margin-bottom: 6px; }
+.deploy-name { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
+@media (max-width: 640px) { .deploy-card { width: 260px; height: 380px; } }
+
+/* ─── PROVEN ─────────────────────────────────────────── */
+#proven { background: var(--bg); }
+
+/* Featured use-case hero cards */
+.usecase-hero {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 60px;
+}
+@media (max-width: 900px) { .usecase-hero { grid-template-columns: 1fr; } }
+
+.usecase-featured {
+  position: relative; min-height: 520px; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 48px 44px; isolation: isolate;
+}
+.usecase-featured.span2 { grid-column: span 2; min-height: 440px; }
+@media (max-width: 900px) { .usecase-featured.span2 { grid-column: span 1; } }
+.usecase-featured img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; filter: brightness(0.45);
+  transition: transform 0.8s ease, filter 0.4s ease;
+}
+.usecase-featured:hover img { transform: scale(1.04); filter: brightness(0.55); }
+.usecase-featured::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.3) 50%, transparent 100%);
+}
+.usecase-content { position: relative; z-index: 2; }
+.usecase-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.usecase-title { font-size: clamp(26px, 3.5vw, 42px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1; margin-bottom: 12px; }
+.usecase-sub { font-family: var(--arabic); font-size: 13px; color: var(--gold); opacity: 0.75; margin-bottom: 20px; direction: rtl; text-align: left; }
+.usecase-desc { font-size: 13px; color: rgba(240,237,230,0.65); line-height: 1.6; max-width: 480px; margin-bottom: 28px; }
+
+/* Stats strip inside use-case card */
+.usecase-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+.usecase-stat {}
+.usecase-stat-num { font-size: clamp(22px, 2.8vw, 32px); font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -0.02em; }
+.usecase-stat-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+/* Capability tags */
+.usecase-caps { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+.usecase-cap {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid rgba(201,168,76,0.25); padding: 5px 10px; color: var(--muted);
+}
+
+/* Grid of smaller supporting cards */
+.proven-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 2px; }
+@media (max-width: 1024px) { .proven-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .proven-grid { grid-template-columns: 1fr; } }
+.proven-card {
+  background: var(--surface); padding: 40px 32px;
+  min-height: 320px; display: flex; flex-direction: column; justify-content: space-between;
+  transition: background 0.3s ease; position: relative; overflow: hidden;
+}
+.proven-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--gold); transform: scaleX(0);
+  transition: transform 0.4s ease; transform-origin: left;
+}
+.proven-card:hover { background: var(--surface-hi); }
+.proven-card:hover::before { transform: scaleX(1); }
+.proven-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+.proven-title { font-size: clamp(18px, 2vw, 24px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.1; }
+.proven-subtitle { font-family: var(--mono); font-size: 10px; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 8px; }
+.proven-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.proven-num { font-size: clamp(28px, 3vw, 40px); font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -0.03em; margin-bottom: 4px; }
+
+/* ─── PARTNERS ───────────────────────────────────────── */
+#partners { background: var(--bg-dim); overflow: hidden; padding: 120px 0; }
+#partners .section-header { padding: 0 64px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; }
+@media (max-width: 768px) { #partners .section-header { padding: 0 24px; } }
+
+.cert-badges { display: flex; gap: 12px; flex-wrap: wrap; }
+.cert-badge {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  border: 1px solid var(--border); padding: 8px 14px;
+  color: var(--muted); display: flex; align-items: center; gap: 8px;
+}
+.cert-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+.partners-scroll {
+  display: flex; gap: 2px; overflow-x: auto; padding: 60px 64px 0;
+  scroll-snap-type: x mandatory;
+}
+.partners-scroll::-webkit-scrollbar { height: 2px; }
+.partners-scroll::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+@media (max-width: 768px) { .partners-scroll { padding: 40px 24px 0; } }
+
+.partner-card {
+  flex-shrink: 0; width: 220px; height: 120px;
+  background: var(--surface); border-left: 2px solid rgba(201,168,76,0.2);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  opacity: 0.4; filter: grayscale(1);
+  transition: opacity 0.3s ease, filter 0.3s ease, border-color 0.3s ease;
+  scroll-snap-align: start; cursor: none;
+}
+.partner-card:hover { opacity: 1; filter: grayscale(0); border-color: var(--gold); }
+.partner-logo { max-width: 120px; max-height: 44px; object-fit: contain; filter: brightness(0) invert(1); }
+.partner-name {
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--white);
+}
+.partner-country { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ─── VISION 2030 ────────────────────────────────────── */
+#vision { background: var(--bg); }
+.vision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 64px; margin-top: 72px; }
+@media (max-width: 900px) { .vision-grid { grid-template-columns: 1fr; gap: 48px; } }
+.vision-item {}
+.vision-num { font-size: clamp(52px, 6vw, 80px); font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -0.04em; margin-bottom: 24px; }
+.vision-title { font-size: 14px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 6px; }
+.vision-ar { font-family: var(--arabic); font-size: 13px; color: var(--gold); opacity: 0.7; margin-bottom: 20px; direction: rtl; text-align: left; }
+.vision-body { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ─── CONTACT ────────────────────────────────────────── */
+#contact { background: var(--bg-dim); border-top: 1px solid var(--border); padding: 120px 64px; }
+@media (max-width: 768px) { #contact { padding: 80px 24px; } }
+.contact-label { margin-bottom: 20px; }
+.contact-headline { font-size: clamp(40px, 6vw, 80px); font-weight: 900; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 80px; line-height: 0.9; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+@media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
+.contact-panel { padding: 56px 64px 56px 0; display: flex; flex-direction: column; justify-content: space-between; min-height: 320px; }
+.contact-panel.right { padding: 56px 0 56px 64px; border-left: 1px solid var(--gold); }
+@media (max-width: 768px) {
+  .contact-panel { padding: 40px 0; }
+  .contact-panel.right { padding: 40px 0; border-left: none; border-top: 1px solid var(--gold); }
+}
+.contact-type { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+.contact-title { font-size: clamp(28px, 3.5vw, 44px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.95; }
+.contact-desc-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.contact-email {
+  font-size: clamp(18px, 2.2vw, 26px); font-weight: 300; color: var(--white);
+  text-decoration: none; transition: color 0.25s ease;
+  display: inline-flex; align-items: center; gap: 12px;
+}
+.contact-email:hover { color: var(--gold); }
+
+/* ─── FOOTER ─────────────────────────────────────────── */
+footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px solid var(--border); }
+@media (max-width: 768px) { footer { padding: 48px 24px 36px; } }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 64px; margin-bottom: 64px; }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; gap: 40px; } }
+.footer-logo-en { font-size: 24px; font-weight: 900; letter-spacing: 0.14em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
+.footer-tagline { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); line-height: 1.8; }
+.footer-col-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+.footer-links { display: flex; flex-direction: column; gap: 12px; }
+.footer-links a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s ease; }
+.footer-links a:hover { color: var(--white); }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 16px; }
+.footer-copy { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
+
+/* ─── SECTION DIVIDER LINE ───────────────────────────── */
+.gold-rule { height: 1px; background: var(--border); margin: 0 64px; }
+@media (max-width: 768px) { .gold-rule { margin: 0 24px; } }
+
+/* ─── ANIMATED LINE ACCENT ───────────────────────────── */
+.line-accent {
+  width: 40px; height: 1px; background: var(--gold); display: inline-block;
+  vertical-align: middle; margin-right: 16px;
+}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ═══ NAV ═══════════════════════════════════════════ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-en">TAKWEEN</span>
+    <span class="nav-logo-ar">تكوين تقنيات</span>
+  </a>
+  <div class="nav-links">
+    <a href="#pillars" class="active">SERVICES</a>
+    <a href="#proven">HERITAGE</a>
+    <a href="#partners">PARTNERS</a>
+    <a href="#vision">VISION 2030</a>
+  </div>
+  <a href="#contact" class="nav-cta">CONTACT</a>
+</nav>
+
+<!-- ═══ HERO ═══════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-grid"></div>
+
+  <div class="scroll-hint">
+    <div class="scroll-hint-label">Scroll</div>
+    <div class="scroll-line"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="label hero-label">من التكوين، تنطلق المنظومة</div>
+
+    <h1 class="display-xl" id="hero-headline" aria-label="Where Infrastructure Thinks"></h1>
+
+    <p class="hero-subtitle">
+      Data Centre Intelligence &amp; Autonomous Robotics<br/>for the Kingdom of Saudi Arabia.
+    </p>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num" id="stat-0">10+</div>
+        <div class="stat-label">OEM Partners</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-1">32</div>
+        <div class="stat-label">Robot Models</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-2">6</div>
+        <div class="stat-label">Industries</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-3">99.999%</div>
+        <div class="stat-label">Uptime Record</div>
+      </div>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#pillars" class="cta-link">
+        Explore Our Capabilities <span class="cta-arrow">→</span>
+      </a>
+      <a href="#contact" class="cta-link secondary">
+        Start a Conversation <span class="cta-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TICKER ══════════════════════════════════════════ -->
+<div id="ticker">
+  <div class="ticker-track" id="ticker-track">
+    <!-- items injected by JS -->
+  </div>
+</div>
+
+<!-- ═══ TWO PILLARS ══════════════════════════════════════ -->
+<section id="pillars" class="section">
+  <div class="section-header reveal">
+    <div class="label" style="margin-bottom:16px">ركيزتان أساسيتان</div>
+    <h2 class="display-lg">Two Pillars of<br/>Excellence</h2>
+  </div>
+
+  <!-- Pillar 1: Data Centres -->
+  <div class="pillar">
+    <div class="reveal" style="transition-delay:0.1s">
+      <div class="pillar-name">Data Centre Services</div>
+      <div class="pillar-ar">خدمات مراكز البيانات</div>
+      <div class="service-list">
+        <div class="service-item">
+          <span class="service-num">01</span>
+          <span class="service-name">Workforce Solutions</span>
+          <span class="service-desc">Certified engineers for mission-critical facilities</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">02</span>
+          <span class="service-name">Operations &amp; Maintenance</span>
+          <span class="service-desc">Proactive programs maximising uptime</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">03</span>
+          <span class="service-name">Commissioning &amp; Validation</span>
+          <span class="service-desc">End-to-end systems validation</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">04</span>
+          <span class="service-name">Audit &amp; Certification</span>
+          <span class="service-desc">Uptime Institute &amp; BICSI compliance</span>
+        </div>
+      </div>
+    </div>
+    <div class="pillar-image reveal" style="transition-delay:0.25s">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBonLEi6_odZKgFfRPmXE1G9T5mUHzIns9DFprAir6f39bi1M8L1MNmHx07mbDVa5M6SXwwKvwpN-NS-5bgtpee80gtRr4VNxjpGplCNK4WWggiqzRIkREdHongHZsP_5kYnykiV8mYfKpT_lqNjNcjEbuTh4qac6TStqKv7fMBPSf5Jj-ylhGzUig_te7T9iys4-0UEmppiiglRlYoEbjp7BQ_TurjQhnrmm735x5xvyaEtkaPFij-BDkUWkIeBdDG41Q4FcP7SCs" alt="Data centre corridor"/>
+    </div>
+  </div>
+
+  <!-- Pillar 2: Robotics -->
+  <div class="pillar pillar-reversed">
+    <div class="pillar-image reveal" style="transition-delay:0.1s">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2CQrqvBnxgaLxyQq0olTKTvlMOiWMIDlOgiqo52bZoSAWpb762tLzGmP8DeqrAGYSpEkG7J-H1KL-jaTXY8-CWV9dE8v5rizmU-4DVbjTR3rqKqy3nf-kUBzDzGz_ZwvAjNaJHqBMrurLCdDkRFXV3c93FAT9WpLsIMu2kZRvR7jvgJd9_y0vpiUo515I2-2XsOW37S-x0AyeHYSMZe6L3VzC5KcVJa0HNrbvrhddTOIC6uuTl2kXtUuZYSgWZOIeHFc8baTzsCY" alt="Service robot in luxury hotel"/>
+    </div>
+    <div class="reveal" style="transition-delay:0.25s">
+      <div class="pillar-name">Intelligent Robotics</div>
+      <div class="pillar-ar">الروبوتات الذكية</div>
+      <div class="service-list">
+        <div class="service-item">
+          <span class="service-num">01</span>
+          <span class="service-name">Hospitality &amp; F&amp;B</span>
+          <span class="service-desc">Autonomous service robots for hotels &amp; events</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">02</span>
+          <span class="service-name">Logistics &amp; Warehousing</span>
+          <span class="service-desc">AMR fleets for sorting &amp; fulfilment</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">03</span>
+          <span class="service-name">Commercial Cleaning</span>
+          <span class="service-desc">AI-powered floor care at scale</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">04</span>
+          <span class="service-name">Security &amp; Patrol</span>
+          <span class="service-desc">Autonomous patrol with advanced sensing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHERE WE DEPLOY ═══════════════════════════════════ -->
+<section id="deploy">
+  <div class="section-header reveal">
+    <div class="label" style="margin-bottom:16px">قطاعات التنفيذ</div>
+    <h2 class="display-lg">Where We Deploy</h2>
+    <p style="font-size:14px;color:var(--muted);margin-top:16px;font-family:var(--mono);letter-spacing:0.1em">Real technology operating in real Saudi environments.</p>
+  </div>
+
+  <div class="deploy-scroll hide-scroll" id="deploy-scroll">
+    <div class="deploy-card reveal">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_JRC71B8va7MMXil-pCXJMFpLFC034jLbJ8u3nJtndUWUufTCJxLlJhM6ZMDWBzDE5SUx14UNc54lAhw2DhyAefHJCxSKTpHWQ829B926OS8CcnOXAzgAvxHIOAwf8FdJOh_wlxjMjV_4Wj3T-lm5rPMVZlhJ6aI4VDFRcGdjCwkYwj-Q7LJMVmLldOt95Fbl10agqTW7doMvM1-OvtWRQE9XTChXc7lUm9hwcP9I6GrNJyv-F4aLZ1QC8cVnIzz5R5fGpp24mPs" alt="Hospitality"/>
+      <div class="deploy-info">
+        <div class="deploy-ar">ضيافة</div>
+        <div class="deploy-name">Hospitality &amp; Hotels</div>
+      </div>
+    </div>
+    <div class="deploy-card reveal" style="transition-delay:0.08s">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBruAHWOx-INKgXMDlMLhoXc40KKqBxs56fqvdacgT54SNcYaTAIdFocNSmXiXVwIV0k-MrUwWSHEnBG8lYjqjd7TzRp4qi5PszBNPxo1IYb7NFo1t4xMSQuJdtvV5vlWI3Wes6B1uQc7XmqxgdxcwtqHzDI11aEwJ6mHTXsX38P1UsqwgpvYtpdk8qRPk6jtMbFSlzHHg5RBMaH2PgfVGFtEEr2uG5pMymIDsoh48ctiglfNMRDAjWv3hCUDDL822-bK_hmY98l6g" alt="Logistics"/>
+      <div class="deploy-info">
+        <div class="deploy-ar">لوجستيات</div>
+        <div class="deploy-name">Logistics &amp; Fulfilment</div>
+      </div>
+    </div>
+    <div class="deploy-card reveal" style="transition-delay:0.16s">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAayn104mQhDo2weVBHrZKsz-svv03fiC7OS6zMeYBjyz9V5vPHwo0SUkkrOdhXYvP861Vkga7QxpuGB7FF65z8nlo4ndq8YywLOojvOg0s3w-eVt6bwMebAqZzFKVmX9MEe2inL-WRk136W5JsH7Z2tVEwLZ38vMxaIFyYbNLplytMfAFdX3HmtD0vbJlWlklF2XPeUBqEaWF3a-GVF5VdTsPemQ-02Ba7AjSfuX1pkEoEx5SswYQv2QcY78AS32cQF6ZDh0rvNkw" alt="Retail"/>
+      <div class="deploy-info">
+        <div class="deploy-ar">تجارة</div>
+        <div class="deploy-name">Retail &amp; Malls</div>
+      </div>
+    </div>
+    <div class="deploy-card reveal" style="transition-delay:0.24s">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN0ZfaCTM1GMOIM6leSO417G-TGbPBy19la6AuR9-PtaXqPfX6aZtnAC8_C-7bXxOlPUE7CEIpN4sTUUUyad42HMEYXD3moN2STHxC3XUdhzbR4qr7fvLHm9sFlI6xIej4SLIHYr_RgP2B7Zttcq2DNCIoQcpIpjRsfvWvOALW7gkp-61PWndWAmw07vaRlHaT3nuoMj61qjIC9HXFI6euj_2bdmoOvEaaLt4CG6wsPGsjFCPnJdgKjhU9T7qC-3-XztB5cf5_WcY" alt="Data Centres"/>
+      <div class="deploy-info">
+        <div class="deploy-ar">مراكز البيانات</div>
+        <div class="deploy-name">Data Centres</div>
+      </div>
+    </div>
+    <div class="deploy-card reveal" style="transition-delay:0.32s">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3KgB7qQgkC1O8Zxpiec1OxWKKbJ4KulFnWb7M1BukErHgxemaUv0E-MKln9XUAD5PN_VVIC9RQQkf6cKzXUCVZafs7Ph392JaOz0PRih6bnHoQEzsOnGdsm2l9INPbnKcAdrFFAiiVdWXqdIyPdgcJvAtWzOmkQ000Hs-oY16Y2fipAG5JpUA7jxKbo3hj_DPGWDEaQRk0bDpcRbmHez5m9q0zZR4NA9PUsnbRqBVhla7mrZRNWA8bI9NeKyZT6gp-uu9kq90ehw" alt="Healthcare"/>
+      <div class="deploy-info">
+        <div class="deploy-ar">رعاية صحية</div>
+        <div class="deploy-name">Healthcare</div>
+      </div>
+    </div>
+    <div class="deploy-card reveal" style="transition-delay:0.4s">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoVNCRj0eDxKu_fd1Ca2c5Z2yJjUl_BtFguAArVxxWcxRvUJIFWYPnYS9ccGuG6HJnT9x4wjsjdJYOqjt8howk4vIoDSoBzXfFOUNt7GB7rMqjAfA80rg8RPqZ2k96ioTxzFUCSd493XV8IcYwcxOEx4TCKsWWZCgMrXHM_FlgNFSKfByUwlb81D2dK47CWQ--QoSD3gMLpfKAe4UEoM6BEVqvaiA_788_Ztnlr_P3e6_vJ3g9MyScjZTCoDmH5-hEka5mFPdNe0M" alt="Giga-Projects"/>
+      <div class="deploy-info">
+        <div class="deploy-ar">مشاريع كبرى</div>
+        <div class="deploy-name">Giga-Projects</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROVEN WHERE IT MATTERS -->
+<section id="proven" class="section">
+  <div class="section-header reveal">
+    <div class="label" style="margin-bottom:16px">أثبتنا كفاءتنا حيث لا مجال للخطأ</div>
+    <h2 class="display-lg">Proven Where<br/>It Matters</h2>
+    <p style="font-size:14px;color:var(--muted);margin-top:20px;max-width:560px;line-height:1.7">Deployed at the world&#39;s most demanding events and sacred sites &#8212; where every sensor, every fibre, every line of code carries the weight of millions of lives.</p>
+  </div>
+
+  <div class="usecase-hero">
+
+    <div class="usecase-featured span2 reveal">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBonLEi6_odZKgFfRPmXE1G9T5mUHzIns9DFprAir6f39bi1M8L1MNmHx07mbDVa5M6SXwwKvwpN-NS-5bgtpee80gtRr4VNxjpGplCNK4WWggiqzRIkREdHongHZsP_5kYnykiV8mYfKpT_lqNjNcjEbuTh4qac6TStqKv7fMBPSf5Jj-ylhGzUig_te7T9iys4-0UEmppiiglRlYoEbjp7BQ_TurjQhnrmm735x5xvyaEtkaPFij-BDkUWkIeBdDG41Q4FcP7SCs" alt="Haramain"/>
+      <div class="usecase-content">
+        <div class="usecase-tag">الحرمين الشريفين &middot; Ongoing &middot; Ramadan &middot; Hajj &middot; Umrah</div>
+        <div class="usecase-title">Makkah &amp; Madinah<br/>Holy Mosques</div>
+        <div class="usecase-sub">المسجد الحرام والمسجد النبوي</div>
+        <div class="usecase-desc">Turnkey crowd intelligence infrastructure at the world&#39;s most visited religious sites. Real-time monitoring across all entrances during Ramadan, Hajj, and Umrah &#8212; in collaboration with the General Authority for the Two Holy Mosques.</div>
+        <div class="usecase-stats">
+          <div class="usecase-stat"><div class="usecase-stat-num">40M+</div><div class="usecase-stat-label">Visitors Counted</div></div>
+          <div class="usecase-stat"><div class="usecase-stat-num">300+</div><div class="usecase-stat-label">Entrances Covered</div></div>
+          <div class="usecase-stat"><div class="usecase-stat-num">30K m</div><div class="usecase-stat-label">Fibre Deployed</div></div>
+          <div class="usecase-stat"><div class="usecase-stat-num">100+</div><div class="usecase-stat-label">Network Switches</div></div>
+        </div>
+        <div class="usecase-caps">
+          <span class="usecase-cap">Crowd Flow Monitoring</span>
+          <span class="usecase-cap">Automated Threshold Alerts</span>
+          <span class="usecase-cap">Command Centre Dashboard</span>
+          <span class="usecase-cap">Private Class C Cloud</span>
+          <span class="usecase-cap">Custom Web Apps</span>
+          <span class="usecase-cap">Turnkey Installation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="usecase-featured reveal" style="transition-delay:0.1s">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_JRC71B8va7MMXil-pCXJMFpLFC034jLbJ8u3nJtndUWUufTCJxLlJhM6ZMDWBzDE5SUx14UNc54lAhw2DhyAefHJCxSKTpHWQ829B926OS8CcnOXAzgAvxHIOAwf8FdJOh_wlxjMjV_4Wj3T-lm5rPMVZlhJ6aI4VDFRcGdjCwkYwj-Q7LJMVmLldOt95Fbl10agqTW7doMvM1-OvtWRQE9XTChXc7lUm9hwcP9I6GrNJyv-F4aLZ1QC8cVnIzz5R5fGpp24mPs" alt="Paris 2024 Olympics"/>
+      <div class="usecase-content">
+        <div class="usecase-tag">IOC &middot; COJO &middot; French Government &middot; Paris 2024</div>
+        <div class="usecase-title">Paris 2024<br/>Olympic Games</div>
+        <div class="usecase-sub">دورة الألعاب الأولمبية باريس</div>
+        <div class="usecase-desc">Selected by the IOC and Paris 2024 Organizing Committee. Comprehensive crowd-flow monitoring across all 28 Olympic venues &#8212; competition venues, fan zones, sponsor activations (Coca-Cola), and national hospitality areas. 250+ sensors deployed within one month under extreme deadline pressure.</div>
+        <div class="usecase-stats">
+          <div class="usecase-stat"><div class="usecase-stat-num">10M+</div><div class="usecase-stat-label">Visitors</div></div>
+          <div class="usecase-stat"><div class="usecase-stat-num">28</div><div class="usecase-stat-label">Olympic Venues</div></div>
+          <div class="usecase-stat"><div class="usecase-stat-num">250+</div><div class="usecase-stat-label">Sensors</div></div>
+          <div class="usecase-stat"><div class="usecase-stat-num">90+</div><div class="usecase-stat-label">Live Zones</div></div>
+        </div>
+        <div class="usecase-caps">
+          <span class="usecase-cap">3D Sensors</span>
+          <span class="usecase-cap">UWB Tags</span>
+          <span class="usecase-cap">Counting Mats</span>
+          <span class="usecase-cap">Bespoke Web Apps</span>
+          <span class="usecase-cap">Sensitive Gov Data</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="usecase-featured reveal" style="transition-delay:0.2s">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoVNCRj0eDxKu_fd1Ca2c5Z2yJjUl_BtFguAArVxxWcxRvUJIFWYPnYS9ccGuG6HJnT9x4wjsjdJYOqjt8howk4vIoDSoBzXfFOUNt7GB7rMqjAfA80rg8RPqZ2k96ioTxzFUCSd493XV8IcYwcxOEx4TCKsWWZCgMrXHM_FlgNFSKfByUwlb81D2dK47CWQ--QoSD3gMLpfKAe4UEoM6BEVqvaiA_788_Ztnlr_P3e6_vJ3g9MyScjZTCoDmH5-hEka5mFPdNe0M" alt="FIFA World Cup Qatar 2022"/>
+      <div class="usecase-content">
+        <div class="usecase-tag">FIFA &middot; Qatar Rail &middot; Doha Metro &middot; 2022</div>
+        <div class="usecase-title">FIFA World Cup<br/>Qatar 2022</div>
+        <div class="usecase-sub">كأس العالم فيفا قطر</div>
+        <div class="usecase-desc">Partnered with FIFA and Qatar Rail to deliver advanced people-flow monitoring across the entire Doha metro network and key stadium entrances &#8212; anticipating surge movements and ensuring safe access for 3M+ fans across all 37 metro stations.</div>
+        <div class="usecase-stats">
+          <div class="usecase-stat"><div class="usecase-stat-num">3M+</div><div class="usecase-stat-label">Fans</div></div>
+          <div class="usecase-stat"><div class="usecase-stat-num">37</div><div class="usecase-stat-label">Metro Stations</div></div>
+        </div>
+        <div class="usecase-caps">
+          <span class="usecase-cap">People Flow Monitoring</span>
+          <span class="usecase-cap">Full Metro Network</span>
+          <span class="usecase-cap">Stadium Entrances</span>
+          <span class="usecase-cap">Transport Coordination</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="proven-grid">
+    <div class="proven-card reveal">
+      <div><div class="proven-tag" style="margin-bottom:16px">Total Scale</div><div class="proven-num">53M+</div><div class="proven-title" style="font-size:clamp(14px,1.5vw,18px);margin-top:6px">Visitors Monitored<br/>Across All Deployments</div></div>
+      <div class="proven-body">Paris Olympics. FIFA World Cup. Haramain. The same proven platform at the world&#39;s most demanding gatherings.</div>
+    </div>
+    <div class="proven-card reveal" style="transition-delay:0.1s">
+      <div><div class="proven-tag" style="margin-bottom:16px">Deployment Speed</div><div class="proven-num">30</div><div class="proven-title" style="font-size:clamp(14px,1.5vw,18px);margin-top:6px">Days to Deploy<br/>250+ Sensors Live</div></div>
+      <div class="proven-body">Olympic-grade deadlines. Incomplete infrastructure. Numerous contractors. Zero failures. This is what operational excellence looks like.</div>
+    </div>
+    <div class="proven-card reveal" style="transition-delay:0.2s">
+      <div><div class="proven-tag" style="margin-bottom:16px">Government Cleared</div><div class="proven-num">GOV</div><div class="proven-title" style="font-size:clamp(14px,1.5vw,18px);margin-top:6px">Trusted with Sensitive<br/>State-Level Data</div></div>
+      <div class="proven-body">French Government. IOC. FIFA. Qatar Rail. Saudi General Authority. We handle the data that cannot fail &#8212; ever.</div>
+    </div>
+    <div class="proven-card reveal" style="transition-delay:0.3s">
+      <div><div class="proven-tag" style="margin-bottom:16px">FIFA 2034 &middot; KSA Next</div><div class="proven-num">2034</div><div class="proven-title" style="font-size:clamp(14px,1.5vw,18px);margin-top:6px">The Only Local Partner<br/>With Global Proof</div></div>
+      <div class="proven-body">Qatar 2022. Paris 2024. Haramain. We are the only intelligence infrastructure company in Saudi Arabia with verified deployments at this scale.</div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══ TECHNOLOGY PARTNERS ══════════════════════════════ -->
+<section id="partners">
+  <div class="section-header reveal">
+    <div>
+      <div class="label" style="margin-bottom:16px">الشركاء التقنيون</div>
+      <h2 class="display-md">Technology Partners</h2>
+      <p style="font-size:13px;color:var(--muted);margin-top:12px;font-family:var(--mono);letter-spacing:0.08em">World-class OEMs. Local expertise. One trusted partner.</p>
+    </div>
+    <div class="cert-badges">
+      <div class="cert-badge"><span class="cert-dot"></span>Uptime Institute Certified</div>
+      <div class="cert-badge"><span class="cert-dot"></span>BICSI Certified</div>
+    </div>
+  </div>
+
+  <div class="partners-scroll hide-scroll" id="partners-scroll">
+    <div class="partner-card reveal">
+      <img class="partner-logo" src="https://www.pudurobotics.com/logo.svg" alt="Pudu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div class="partner-name">PUDU</div>
+      <div class="partner-country">China · Hospitality</div>
+    </div>
+    <div class="partner-card reveal" style="transition-delay:0.07s">
+      <img class="partner-logo" src="https://static.keenon.com/assets/images/common/logo-gray.webp" alt="Keenon" onerror="this.style.display='none'"/>
+      <div class="partner-name">KEENON</div>
+      <div class="partner-country">China · F&amp;B Robotics</div>
+    </div>
+    <div class="partner-card reveal" style="transition-delay:0.14s">
+      <img class="partner-logo" src="https://www.geekplus.com/hs-fs/hubfs/geek+%20logo%20transparent-1.png?width=200&height=76" alt="Geek+" onerror="this.style.display='none'"/>
+      <div class="partner-name">GEEK+</div>
+      <div class="partner-country">China · Logistics AMR</div>
+    </div>
+    <div class="partner-card reveal" style="transition-delay:0.21s">
+      <img class="partner-logo" src="https://www.forwardx.com/wp-content/uploads/2023/01/logo-606_228.png" alt="ForwardX" onerror="this.style.display='none'"/>
+      <div class="partner-name">FORWARDX</div>
+      <div class="partner-country">China · Warehouse AMR</div>
+    </div>
+    <div class="partner-card reveal" style="transition-delay:0.28s">
+      <img class="partner-logo" src="https://gausium.com/wp-content/uploads/2022/04/Gausium-logo-horizontal-white.svg" alt="Gausium" onerror="this.style.display='none'"/>
+      <div class="partner-name">GAUSIUM</div>
+      <div class="partner-country">China · Cleaning Robots</div>
+    </div>
+    <div class="partner-card reveal" style="transition-delay:0.35s">
+      <img class="partner-logo" src="https://www.lionsbot.com/wp-content/uploads/2021/07/logo.png" alt="LionsBot" onerror="this.style.display='none'"/>
+      <div class="partner-name">LIONSBOT</div>
+      <div class="partner-country">Singapore · Cleaning</div>
+    </div>
+    <div class="partner-card reveal" style="transition-delay:0.42s">
+      <img class="partner-logo" src="https://knightscope.com/hubfs/Logo%20-%202025/KSCP-Logo-V2-Horizontal-White%20(1).svg" alt="Knightscope" onerror="this.style.display='none'"/>
+      <div class="partner-name">KNIGHTSCOPE</div>
+      <div class="partner-country">USA · Security Patrol</div>
+    </div>
+    <div class="partner-card reveal" style="transition-delay:0.49s">
+      <div class="partner-name">RICHTECH</div>
+      <div class="partner-country">USA · Service Robots</div>
+    </div>
+    <div class="partner-card reveal" style="transition-delay:0.56s">
+      <div class="partner-name">AVIDBOTS</div>
+      <div class="partner-country">Canada · Facility AMR</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VISION 2030 ══════════════════════════════════════ -->
+<section id="vision" class="section">
+  <div class="section-header reveal">
+    <div class="label" style="margin-bottom:16px">قيَّمنا لرؤية ٢٠٣٠</div>
+    <h2 class="display-lg">Built for<br/>Vision 2030</h2>
+    <p style="font-size:14px;color:var(--muted);margin-top:20px;max-width:560px;line-height:1.7">Every service we deliver is architected to advance the Kingdom's transformation agenda.</p>
+  </div>
+  <div class="vision-grid">
+    <div class="vision-item reveal">
+      <div class="vision-num">01</div>
+      <div class="vision-title">Mega-Project Ready</div>
+      <div class="vision-ar">جاهزون للمشاريع العملاقة</div>
+      <div class="vision-body">Scaled to support NEOM, The Red Sea, Diriyah, and other giga-projects with proven delivery frameworks and full-stack operational capability.</div>
+    </div>
+    <div class="vision-item reveal" style="transition-delay:0.15s">
+      <div class="vision-num">02</div>
+      <div class="vision-title">Saudization &amp; Workforce</div>
+      <div class="vision-ar">السعودة وتنمية القوى العاملة</div>
+      <div class="vision-body">Active Nitaqat compliance with structured Saudi talent development programs building local technical leadership across all disciplines.</div>
+    </div>
+    <div class="vision-item reveal" style="transition-delay:0.3s">
+      <div class="vision-num">03</div>
+      <div class="vision-title">Regulatory Compliance</div>
+      <div class="vision-ar">الامتثال التنظيمي</div>
+      <div class="vision-body">Full alignment with CITC, NCA, and MISA requirements from day one. Data sovereignty and infrastructure safety standards exceeded.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══════════════════════════════════════════ -->
+<section id="contact">
+  <div class="contact-label label">لنبدأ الحوار</div>
+  <h2 class="contact-headline">Start the<br/>Conversation</h2>
+  <div class="contact-grid">
+    <div class="contact-panel reveal">
+      <div>
+        <div class="contact-type">OEM &amp; Technology</div>
+        <div class="contact-title">For Technology<br/>Partners</div>
+      </div>
+      <div>
+        <div class="contact-desc-label">Global Partnership Desk</div>
+        <a href="mailto:partners@takween.sa" class="contact-email">partners@takween.sa  <span style="opacity:0.5">→</span></a>
+      </div>
+    </div>
+    <div class="contact-panel right reveal" style="transition-delay:0.15s">
+      <div>
+        <div class="contact-type">Enterprise</div>
+        <div class="contact-title">For Saudi<br/>Enterprises</div>
+      </div>
+      <div>
+        <div class="contact-desc-label">Regional Operations Desk</div>
+        <a href="mailto:info@takween.sa" class="contact-email">info@takween.sa <span style="opacity:0.5">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo-en">TAKWEEN</div>
+      <div style="font-family:var(--arabic);font-size:13px;color:var(--gold);opacity:0.6;margin-bottom:20px;direction:rtl">تكوين تقنيات</div>
+      <div class="footer-tagline">
+        Headquarters: Riyadh,<br/>Kingdom of Saudi Arabia.<br/><br/>
+        Infrastructure Intelligence<br/>for the Digital Kingdom.
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-label">Navigate</div>
+      <div class="footer-links">
+        <a href="#pillars">Services</a>
+        <a href="#proven">Heritage</a>
+        <a href="#partners">Partners</a>
+        <a href="#vision">Vision 2030</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-label">Legal</div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Data Protection</a>
+      </div>
+      <div style="margin-top:32px">
+        <div class="footer-col-label">Connect</div>
+        <div class="footer-links">
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Takween Technologies · All rights reserved · جميع الحقوق محفوظة</div>
+    <div class="footer-copy" style="color:var(--gold);opacity:0.4">RIYADH · KSA</div>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════════ -->
+<script>
+/* ── CURSOR ─────────────────────────────────────────────── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animCursor() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animCursor);
+})();
+document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; ring.style.opacity = '0'; });
+document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; ring.style.opacity = '1'; });
+
+/* ── NAV SCROLL ─────────────────────────────────────────── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+}, { passive: true });
+
+/* ── TICKER BUILD ───────────────────────────────────────── */
+const items = [
+  'Arab News','Forbes Middle East','LEAP 2025','GITEX Global',
+  'Al Arabiya Business','Saudi Gazette','Bloomberg Arabia',
+  'MIT Technology Review MENA','Vision 2030 Official','Zawya','Muqtaham',
+];
+const track = document.getElementById('ticker-track');
+const full = [...items, ...items, ...items, ...items];
+track.innerHTML = full.map(i =>
+  `<span class="ticker-item"><span class="ticker-dot"></span>${i}</span>`
+).join('');
+
+/* ── HERO HEADLINE SPLIT & ANIMATE ──────────────────────── */
+const words = ['Where', 'Infrastructure', 'Thinks'];
+const hl = document.getElementById('hero-headline');
+hl.innerHTML = words.map(w =>
+  `<span class="hero-word"><span class="hero-word-inner">${w}</span></span> `
+).join('');
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero entrance sequence
+const tl = gsap.timeline({ delay: 0.3 });
+tl.to('.hero-word-inner', {
+  y: 0, duration: 1.1, ease: 'expo.out',
+  stagger: 0.09
+})
+.to('.hero-label', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.6')
+.to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5')
+.to('.stats-row', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+.to('.hero-ctas', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3')
+.to('.scroll-hint', { opacity: 1, duration: 0.6 }, '-=0.2');
+
+/* ── COUNTUP STATS ──────────────────────────────────────── */
+const statConfigs = [
+  { id: 'stat-0', end: 10, suffix: '+', decimal: 0 },
+  { id: 'stat-1', end: 32, suffix: '', decimal: 0 },
+  { id: 'stat-2', end: 6,  suffix: '', decimal: 0 },
+  { id: 'stat-3', end: 99.999, suffix: '%', decimal: 3 },
+];
+
+let statsTriggered = false;
+ScrollTrigger.create({
+  trigger: '.stats-row',
+  start: 'top 80%',
+  onEnter: () => {
+    if (statsTriggered) return;
+    statsTriggered = true;
+    statConfigs.forEach(cfg => {
+      const el = document.getElementById(cfg.id);
+      if (!el) return;
+      const cu = new countUp.CountUp(cfg.id, cfg.end, {
+        duration: 2.2,
+        decimalPlaces: cfg.decimal,
+        suffix: cfg.suffix,
+        useEasing: true,
+        useGrouping: false,
+      });
+      cu.start();
+    });
+  }
+});
+
+/* ── SECTION REVEALS (ScrollTrigger) ────────────────────── */
+document.querySelectorAll('.reveal').forEach(el => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 60 },
+    {
+      opacity: 1, y: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 88%',
+        once: true,
+      }
+    }
+  );
+});
+
+/* ── DEPLOY SCROLL DRAG ─────────────────────────────────── */
+function makeDraggable(el) {
+  let isDown = false, startX, scrollLeft;
+  el.addEventListener('mousedown', e => {
+    isDown = true; startX = e.pageX - el.offsetLeft; scrollLeft = el.scrollLeft;
+    el.style.cursor = 'grabbing';
+  });
+  el.addEventListener('mouseleave', () => { isDown = false; el.style.cursor = ''; });
+  el.addEventListener('mouseup', () => { isDown = false; el.style.cursor = ''; });
+  el.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    el.scrollLeft = scrollLeft - (x - startX) * 1.4;
+  });
+}
+makeDraggable(document.getElementById('deploy-scroll'));
+makeDraggable(document.getElementById('partners-scroll'));
+
+/* ── NAV ACTIVE LINK ON SCROLL ──────────────────────────── */
+const sections = ['pillars','proven','partners','vision','contact'];
+const navLinks = document.querySelectorAll('.nav-links a');
+sections.forEach(id => {
+  ScrollTrigger.create({
+    trigger: '#' + id,
+    start: 'top center',
+    end: 'bottom center',
+    onToggle: self => {
+      navLinks.forEach(a => {
+        a.classList.toggle('active', self.isActive && a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+});
+
+/* ── PARALLAX HERO BG ───────────────────────────────────── */
+gsap.to('.hero-bg', {
+  yPercent: 20,
+  ease: 'none',
+  scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
+});
+
+/* ── PILLAR IMAGE PARALLAX ──────────────────────────────── */
+document.querySelectorAll('.pillar-image img').forEach(img => {
+  gsap.fromTo(img,
+    { yPercent: -8 },
+    { yPercent: 8, ease: 'none',
+      scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
+    }
+  );
+});
+</script>
+</body>
+</html>
