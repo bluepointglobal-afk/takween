@@ -38,6 +38,11 @@
   --arabic:    'Tajawal', sans-serif;
   /* Display font stack — closest open-source to Söhne */
   --display:   'Helvetica Neue', 'Arial Black', sans-serif;
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --dur-fast: 220ms;
+  --dur-base: 420ms;
+  --dur-slow: 760ms;
 }
 
 html { scroll-behavior: smooth; }
@@ -58,7 +63,7 @@ body {
   position: fixed; top: 0; left: 0;
   pointer-events: none; z-index: 9999;
   transform: translate(-50%,-50%);
-  transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+  transition: transform var(--dur-fast) var(--ease-soft), width var(--dur-fast) var(--ease-soft), height var(--dur-fast) var(--ease-soft), background var(--dur-fast) var(--ease-soft);
   mix-blend-mode: normal;
 }
 #cursor-ring {
@@ -68,7 +73,7 @@ body {
   position: fixed; top: 0; left: 0;
   pointer-events: none; z-index: 9998;
   transform: translate(-50%,-50%);
-  transition: all 0.08s ease;
+  transition: all 120ms linear;
 }
 body:has(a:hover) #cursor,
 body:has(button:hover) #cursor { width: 24px; height: 24px; background: transparent; border: 1px solid var(--gold); }
@@ -121,7 +126,7 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   padding: 28px 64px;
   display: flex; align-items: center; justify-content: space-between;
-  transition: padding 0.4s ease, background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+  transition: padding var(--dur-base) var(--ease-standard), background var(--dur-base) var(--ease-standard), backdrop-filter var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard), box-shadow var(--dur-base) var(--ease-standard);
   border-bottom: 1px solid transparent;
 }
 #nav.scrolled {
@@ -130,6 +135,7 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-color: var(--border);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.22);
 }
 @media (max-width: 768px) { #nav { padding: 20px 24px; } #nav.scrolled { padding: 14px 24px; } }
 
@@ -146,12 +152,12 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
   font-family: var(--mono); font-size: 10px;
   letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--muted); text-decoration: none;
-  transition: color 0.25s ease; position: relative; padding-bottom: 2px;
+  transition: color var(--dur-fast) var(--ease-soft); position: relative; padding-bottom: 2px;
 }
 .nav-links a::after {
   content: ''; position: absolute; bottom: 0; left: 0; right: 0;
   height: 1px; background: var(--gold); transform: scaleX(0);
-  transition: transform 0.25s ease;
+  transition: transform var(--dur-fast) var(--ease-soft);
 }
 .nav-links a:hover { color: var(--white); }
 .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
@@ -162,9 +168,9 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
   text-transform: uppercase; color: var(--gold);
   border: 1px solid var(--gold); padding: 10px 20px;
   background: transparent; cursor: none; text-decoration: none;
-  transition: background 0.25s ease, color 0.25s ease;
+  transition: background var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft);
 }
-.nav-cta:hover { background: var(--gold); color: #1a1200; }
+.nav-cta:hover { background: var(--gold); color: #1a1200; transform: translateY(-1px); }
 
 @media (max-width: 900px) { .nav-links { display: none; } }
 
@@ -174,13 +180,24 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 0 64px 72px; position: relative; overflow: hidden;
 }
+#hero::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 180px;
+  background: linear-gradient(to bottom, rgba(10,10,15,0), rgba(10,10,15,0.88) 58%, var(--bg) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
 @media (max-width: 768px) { #hero { padding: 0 24px 48px; } }
 
 .hero-bg {
   position: absolute; inset: 0; z-index: 0;
-  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrScX8Z1p4I0zUyF1ALofH1wrt-xZJ49MeJ-R7AiID6uYO1aFwbGBW30To6NB0knXjl8P8OKuXxS__4QapU9039XBPgxTUIoD3hilfAHR6h4jnw5rJWjknbhjDtzoNYNTLjNC6q-BzKPrMxTTRuqUqzQ_HhstJyRTYFv0NJzRGP8VH1EqJnCXH2bcCxpfEuSvzlsTHNKZybeJt1hUBqkkMJWSsCHELyKoHQ89FRCo8vUZht50UjGX4pP1-4FdvprrGtXCFTvVLUhs');
-  background-size: cover; background-position: center;
   opacity: 0.18;
+}
+.hero-bg video {
+  width: 100%; height: 100%;
+  object-fit: cover;
 }
 .hero-vignette {
   position: absolute; inset: 0; z-index: 1;
@@ -230,12 +247,12 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
   text-transform: uppercase; color: var(--white); text-decoration: none;
   border-bottom: 1px solid var(--gold); padding-bottom: 4px;
   display: inline-flex; align-items: center; gap: 12px;
-  transition: color 0.25s ease, gap 0.25s ease;
+  transition: color var(--dur-fast) var(--ease-soft), gap var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft);
 }
 .cta-link:hover { color: var(--gold); gap: 20px; }
 .cta-link.secondary { border-color: transparent; color: var(--muted); }
 .cta-link.secondary:hover { color: var(--white); border-color: var(--dim); }
-.cta-arrow { display: inline-block; transition: transform 0.25s ease; font-size: 16px; }
+.cta-arrow { display: inline-block; transition: transform var(--dur-fast) var(--ease-soft); font-size: 16px; }
 .cta-link:hover .cta-arrow { transform: translateX(6px); }
 
 /* Scroll indicator */
@@ -255,10 +272,29 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
   border-bottom: 1px solid var(--border);
   padding: 20px 0; overflow: hidden; background: var(--bg-dim);
   position: relative;
+  isolation: isolate;
+}
+#ticker::before,
+#ticker::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 72px;
+  pointer-events: none;
+  z-index: 1;
+}
+#ticker::before {
+  top: -1px;
+  background: linear-gradient(to bottom, rgba(10,10,15,0.72), rgba(10,10,15,0));
+}
+#ticker::after {
+  bottom: -1px;
+  background: linear-gradient(to top, rgba(10,10,15,0.72), rgba(10,10,15,0));
 }
 .ticker-track {
   display: flex; white-space: nowrap;
   animation: ticker 35s linear infinite;
+  will-change: transform;
 }
 #ticker:hover .ticker-track { animation-play-state: paused; }
 .ticker-item {
@@ -273,19 +309,54 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
 }
 
 /* ─── SECTIONS COMMON ────────────────────────────────── */
-.section { padding: 120px 64px; }
+.section { padding: 120px 64px; position: relative; isolation: isolate; }
 @media (max-width: 768px) { .section { padding: 80px 24px; } }
 .section-header { margin-bottom: 80px; }
 
-.reveal { opacity: 0; transform: translateY(60px); }
+.reveal { opacity: 0; transform: translateY(60px); will-change: transform, opacity; }
+.section-transition::before,
+.section-transition::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 110px;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-transition::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(10,10,15,0.75), rgba(10,10,15,0));
+}
+.section-transition::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(10,10,15,0.75), rgba(10,10,15,0));
+}
 
 /* ─── TWO PILLARS ────────────────────────────────────── */
 #pillars { background: var(--bg); }
-.pillar { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-bottom: 120px; }
+.pillar {
+  position: relative;
+  min-height: clamp(620px, 78vw, 920px);
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 120px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  overflow: hidden;
+  background: var(--bg);
+}
 .pillar:last-child { margin-bottom: 0; }
-@media (max-width: 900px) { .pillar { grid-template-columns: 1fr; } }
-.pillar-reversed .pillar-image { order: -1; }
-@media (max-width: 900px) { .pillar-reversed .pillar-image { order: 0; } }
+.pillar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(10,10,15,0.92) 0%, rgba(10,10,15,0.5) 34%, rgba(10,10,15,0.16) 60%, rgba(10,10,15,0.68) 100%),
+    linear-gradient(to right, rgba(10,10,15,0.78) 0%, rgba(10,10,15,0.42) 34%, rgba(10,10,15,0.08) 64%, rgba(10,10,15,0.3) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
 
 .pillar-name { font-size: clamp(24px, 3vw, 36px); font-weight: 900; margin-bottom: 6px; text-transform: uppercase; letter-spacing: -0.01em; }
 .pillar-ar { font-family: var(--arabic); font-size: 18px; color: var(--gold); margin-bottom: 44px; direction: rtl; text-align: left; }
@@ -293,25 +364,69 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
 .service-item {
   display: flex; align-items: center; gap: 28px;
   border-bottom: 1px solid var(--border); padding: 18px 0;
-  transition: border-color 0.25s ease;
+  transition: border-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft);
 }
-.service-item:hover { border-color: var(--gold-dim); }
+.service-item:hover { border-color: var(--gold-dim); transform: translateX(4px); }
 .service-num { font-family: var(--mono); font-size: 10px; color: var(--gold); letter-spacing: 0.1em; flex-shrink: 0; width: 24px; }
 .service-name { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white); }
 .service-desc { font-size: 12px; color: var(--muted); margin-left: auto; text-align: right; max-width: 220px; }
 
-.pillar-image { height: 600px; overflow: hidden; position: relative; }
-.pillar-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
-.pillar-image:hover img { transform: scale(1.04); }
+.pillar-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.pillar-image img,
+.pillar-image video { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-standard), filter var(--dur-base) var(--ease-standard); will-change: transform; }
+.pillar-image:hover img,
+.pillar-image:hover video { transform: scale(1.04); }
+.pillar-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,15,0.78), rgba(10,10,15,0.14) 44%, rgba(10,10,15,0.34) 100%);
+  pointer-events: none;
+}
+.pillar-image.dark-video video { filter: brightness(0.24) saturate(0.78) contrast(1.08); }
+.pillar-image.infra-video video { filter: brightness(0.66) saturate(0.92) contrast(1.01); }
+.pillar-content {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1400px);
+  margin: 0 auto;
+  padding: 88px 64px 72px;
+}
+@media (max-width: 768px) {
+  .pillar {
+    min-height: 640px;
+    margin-bottom: 72px;
+  }
+  .pillar-content { padding: 56px 24px 40px; }
+  .service-item { flex-wrap: wrap; gap: 12px 18px; }
+  .service-desc { margin-left: 42px; max-width: none; text-align: left; }
+}
 
 /* ─── WHERE WE DEPLOY ────────────────────────────────── */
-#deploy { background: var(--bg-dim); overflow: hidden; padding: 120px 0; }
+#deploy { background: var(--bg-dim); overflow: hidden; padding: 120px 0; position: relative; isolation: isolate; }
 #deploy .section-header { padding: 0 64px 0; }
 @media (max-width: 768px) { #deploy .section-header { padding: 0 24px; } }
 
+.section-panel-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(201,168,76,0.07), transparent 34%),
+    radial-gradient(circle at 80% 100%, rgba(201,168,76,0.05), transparent 38%);
+}
 .deploy-scroll {
   display: flex; gap: 3px; overflow-x: auto; padding: 0 64px; margin-top: 60px;
   scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  position: relative;
+  z-index: 1;
 }
 .deploy-scroll::-webkit-scrollbar { height: 2px; }
 .deploy-scroll::-webkit-scrollbar-thumb { background: var(--gold-dim); }
@@ -321,7 +436,7 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
   flex-shrink: 0; width: 320px; height: 480px; position: relative;
   overflow: hidden; scroll-snap-align: start; cursor: none;
 }
-.deploy-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; filter: brightness(0.7); }
+.deploy-card img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-standard), filter var(--dur-base) var(--ease-standard); filter: brightness(0.7); }
 .deploy-card:hover img { transform: scale(1.06); }
 .deploy-card::after {
   content: ''; position: absolute; inset: 0;
@@ -351,12 +466,36 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
 .usecase-featured img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; filter: brightness(0.45);
-  transition: transform 0.8s ease, filter 0.4s ease;
+  transition: transform var(--dur-slow) var(--ease-standard), filter var(--dur-base) var(--ease-standard);
 }
 .usecase-featured:hover img { transform: scale(1.04); filter: brightness(0.55); }
 .usecase-featured::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.3) 50%, transparent 100%);
+}
+.usecase-collage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 2px;
+}
+.usecase-collage-panel {
+  position: relative;
+  overflow: hidden;
+}
+.usecase-collage-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,15,0.74), rgba(10,10,15,0.18) 48%, rgba(10,10,15,0.28) 100%);
+}
+.usecase-collage-panel img {
+  filter: brightness(0.52) saturate(0.95);
+}
+.usecase-featured:hover .usecase-collage-panel img {
+  transform: scale(1.04);
+  filter: brightness(0.6) saturate(1);
 }
 .usecase-content { position: relative; z-index: 2; }
 .usecase-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
@@ -384,14 +523,15 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
 .proven-card {
   background: var(--surface); padding: 40px 32px;
   min-height: 320px; display: flex; flex-direction: column; justify-content: space-between;
-  transition: background 0.3s ease; position: relative; overflow: hidden;
+  transition: background var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard); position: relative; overflow: hidden;
+  border: 1px solid transparent;
 }
 .proven-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: var(--gold); transform: scaleX(0);
-  transition: transform 0.4s ease; transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-standard); transform-origin: left;
 }
-.proven-card:hover { background: var(--surface-hi); }
+.proven-card:hover { background: var(--surface-hi); transform: translateY(-6px); border-color: var(--border); }
 .proven-card:hover::before { transform: scaleX(1); }
 .proven-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
 .proven-title { font-size: clamp(18px, 2vw, 24px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.1; }
@@ -400,7 +540,7 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
 .proven-num { font-size: clamp(28px, 3vw, 40px); font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -0.03em; margin-bottom: 4px; }
 
 /* ─── PARTNERS ───────────────────────────────────────── */
-#partners { background: var(--bg-dim); overflow: hidden; padding: 120px 0; }
+#partners { background: var(--bg-dim); overflow: hidden; padding: 120px 0; position: relative; isolation: isolate; }
 #partners .section-header { padding: 0 64px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; }
 @media (max-width: 768px) { #partners .section-header { padding: 0 24px; } }
 
@@ -425,10 +565,10 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
   background: var(--surface); border-left: 2px solid rgba(201,168,76,0.2);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
   opacity: 0.4; filter: grayscale(1);
-  transition: opacity 0.3s ease, filter 0.3s ease, border-color 0.3s ease;
+  transition: opacity var(--dur-base) var(--ease-standard), filter var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard), background var(--dur-base) var(--ease-standard);
   scroll-snap-align: start; cursor: none;
 }
-.partner-card:hover { opacity: 1; filter: grayscale(0); border-color: var(--gold); }
+.partner-card:hover { opacity: 1; filter: grayscale(0); border-color: var(--gold); transform: translateY(-4px); background: var(--surface-hi); }
 .partner-logo { max-width: 120px; max-height: 44px; object-fit: contain; filter: brightness(0) invert(1); }
 .partner-name {
   font-family: var(--mono); font-size: 13px; font-weight: 700;
@@ -464,10 +604,10 @@ body:has(button:hover) #cursor { width: 24px; height: 24px; background: transpar
 .contact-desc-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 .contact-email {
   font-size: clamp(18px, 2.2vw, 26px); font-weight: 300; color: var(--white);
-  text-decoration: none; transition: color 0.25s ease;
+  text-decoration: none; transition: color var(--dur-fast) var(--ease-soft), gap var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft);
   display: inline-flex; align-items: center; gap: 12px;
 }
-.contact-email:hover { color: var(--gold); }
+.contact-email:hover { color: var(--gold); gap: 18px; transform: translateX(2px); }
 
 /* ─── FOOTER ─────────────────────────────────────────── */
 footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px solid var(--border); }
@@ -478,8 +618,8 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
 .footer-tagline { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); line-height: 1.8; }
 .footer-col-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
 .footer-links { display: flex; flex-direction: column; gap: 12px; }
-.footer-links a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s ease; }
-.footer-links a:hover { color: var(--white); }
+.footer-links a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft); }
+.footer-links a:hover { color: var(--white); transform: translateX(3px); }
 .footer-bottom { border-top: 1px solid var(--border); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 16px; }
 .footer-copy { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
 
@@ -491,6 +631,20 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
 .line-accent {
   width: 40px; height: 1px; background: var(--gold); display: inline-block;
   vertical-align: middle; margin-right: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .hero-grid,
+  .scroll-line,
+  .ticker-track { animation: none !important; }
+  .reveal,
+  .hero-label,
+  .hero-subtitle,
+  .stats-row,
+  .hero-ctas,
+  .scroll-hint { opacity: 1 !important; transform: none !important; }
 }
 </style>
 </head>
@@ -517,7 +671,11 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
 
 <!-- ═══ HERO ═══════════════════════════════════════════ -->
 <section id="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-bg">
+    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="12832029_1990_1080_24fps.mp4" type="video/mp4"/>
+    </video>
+  </div>
   <div class="hero-vignette"></div>
   <div class="hero-grid"></div>
 
@@ -566,7 +724,7 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
 </section>
 
 <!-- ═══ TICKER ══════════════════════════════════════════ -->
-<div id="ticker">
+<div id="ticker" class="section-transition">
   <div class="ticker-track" id="ticker-track">
     <!-- items injected by JS -->
   </div>
@@ -576,12 +734,17 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
 <section id="pillars" class="section">
   <div class="section-header reveal">
     <div class="label" style="margin-bottom:16px">ركيزتان أساسيتان</div>
-    <h2 class="display-lg">Two Pillars of<br/>Excellence</h2>
+    <h2 class="display-lg">Three Pillars of<br/>Excellence</h2>
   </div>
 
   <!-- Pillar 1: Data Centres -->
   <div class="pillar">
-    <div class="reveal" style="transition-delay:0.1s">
+    <div class="pillar-image dark-video reveal" style="transition-delay:0.25s">
+      <video autoplay muted loop playsinline preload="metadata">
+        <source src="20591257-hd_1920_1080_60fps.mp4" type="video/mp4"/>
+      </video>
+    </div>
+    <div class="pillar-content reveal" style="transition-delay:0.1s">
       <div class="pillar-name">Data Centre Services</div>
       <div class="pillar-ar">خدمات مراكز البيانات</div>
       <div class="service-list">
@@ -607,17 +770,16 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
         </div>
       </div>
     </div>
-    <div class="pillar-image reveal" style="transition-delay:0.25s">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBonLEi6_odZKgFfRPmXE1G9T5mUHzIns9DFprAir6f39bi1M8L1MNmHx07mbDVa5M6SXwwKvwpN-NS-5bgtpee80gtRr4VNxjpGplCNK4WWggiqzRIkREdHongHZsP_5kYnykiV8mYfKpT_lqNjNcjEbuTh4qac6TStqKv7fMBPSf5Jj-ylhGzUig_te7T9iys4-0UEmppiiglRlYoEbjp7BQ_TurjQhnrmm735x5xvyaEtkaPFij-BDkUWkIeBdDG41Q4FcP7SCs" alt="Data centre corridor"/>
-    </div>
   </div>
 
   <!-- Pillar 2: Robotics -->
-  <div class="pillar pillar-reversed">
+  <div class="pillar">
     <div class="pillar-image reveal" style="transition-delay:0.1s">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2CQrqvBnxgaLxyQq0olTKTvlMOiWMIDlOgiqo52bZoSAWpb762tLzGmP8DeqrAGYSpEkG7J-H1KL-jaTXY8-CWV9dE8v5rizmU-4DVbjTR3rqKqy3nf-kUBzDzGz_ZwvAjNaJHqBMrurLCdDkRFXV3c93FAT9WpLsIMu2kZRvR7jvgJd9_y0vpiUo515I2-2XsOW37S-x0AyeHYSMZe6L3VzC5KcVJa0HNrbvrhddTOIC6uuTl2kXtUuZYSgWZOIeHFc8baTzsCY" alt="Service robot in luxury hotel"/>
+      <video autoplay muted loop playsinline preload="metadata">
+        <source src="13814803_3840_2160_100fps.mp4" type="video/mp4"/>
+      </video>
     </div>
-    <div class="reveal" style="transition-delay:0.25s">
+    <div class="pillar-content reveal" style="transition-delay:0.25s">
       <div class="pillar-name">Intelligent Robotics</div>
       <div class="pillar-ar">الروبوتات الذكية</div>
       <div class="service-list">
@@ -644,10 +806,56 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
       </div>
     </div>
   </div>
+
+  <!-- Pillar 3: Critical Infrastructure -->
+  <div class="pillar">
+    <div class="pillar-image dark-video infra-video reveal" style="transition-delay:0.1s">
+      <video autoplay muted loop playsinline preload="metadata">
+        <source src="6216703-uhd_2560_1440_30fps.mp4" type="video/mp4"/>
+      </video>
+    </div>
+    <div class="pillar-content reveal" style="transition-delay:0.25s">
+      <div class="pillar-name">Critical Infrastructure</div>
+      <div class="pillar-ar">البنية التحتية الحرجة</div>
+      <div class="service-list">
+        <div class="service-item">
+          <span class="service-num">01</span>
+          <span class="service-name">Protected Facilities &amp; Bunkers</span>
+          <span class="service-desc">Support for hardened, underground, and fortified operational sites</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">02</span>
+          <span class="service-name">Command &amp; Control Environments</span>
+          <span class="service-desc">Integrated monitoring, systems coordination, and resilient readiness</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">03</span>
+          <span class="service-name">Life-Safety &amp; Continuity Systems</span>
+          <span class="service-desc">Critical power, cooling, environmental control, and operational continuity</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">04</span>
+          <span class="service-name">Security, Access &amp; Surveillance</span>
+          <span class="service-desc">Restricted access, perimeter intelligence, and live situational awareness</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">05</span>
+          <span class="service-name">Commissioning &amp; Resilience Testing</span>
+          <span class="service-desc">Validation for mission-critical performance under demanding conditions</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">06</span>
+          <span class="service-name">Confidential Program Delivery</span>
+          <span class="service-desc">Controlled execution for sensitive state, strategic, and defense-adjacent assets</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ WHERE WE DEPLOY ═══════════════════════════════════ -->
-<section id="deploy">
+<section id="deploy" class="section-transition">
+  <div class="section-panel-glow"></div>
   <div class="section-header reveal">
     <div class="label" style="margin-bottom:16px">قطاعات التنفيذ</div>
     <h2 class="display-lg">Where We Deploy</h2>
@@ -701,7 +909,7 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
 </section>
 
 <!-- PROVEN WHERE IT MATTERS -->
-<section id="proven" class="section">
+<section id="proven" class="section section-transition">
   <div class="section-header reveal">
     <div class="label" style="margin-bottom:16px">أثبتنا كفاءتنا حيث لا مجال للخطأ</div>
     <h2 class="display-lg">Proven Where<br/>It Matters</h2>
@@ -711,7 +919,14 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
   <div class="usecase-hero">
 
     <div class="usecase-featured span2 reveal">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBonLEi6_odZKgFfRPmXE1G9T5mUHzIns9DFprAir6f39bi1M8L1MNmHx07mbDVa5M6SXwwKvwpN-NS-5bgtpee80gtRr4VNxjpGplCNK4WWggiqzRIkREdHongHZsP_5kYnykiV8mYfKpT_lqNjNcjEbuTh4qac6TStqKv7fMBPSf5Jj-ylhGzUig_te7T9iys4-0UEmppiiglRlYoEbjp7BQ_TurjQhnrmm735x5xvyaEtkaPFij-BDkUWkIeBdDG41Q4FcP7SCs" alt="Haramain"/>
+      <div class="usecase-collage" aria-hidden="true">
+        <div class="usecase-collage-panel">
+          <img src="https://images.pexels.com/photos/3742589/pexels-photo-3742589.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Crowds around the Kaaba in Makkah at night"/>
+        </div>
+        <div class="usecase-collage-panel">
+          <img src="https://images.pexels.com/photos/33169785/pexels-photo-33169785.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Pilgrims gathered at Al-Masjid an-Nabawi in Madinah"/>
+        </div>
+      </div>
       <div class="usecase-content">
         <div class="usecase-tag">الحرمين الشريفين &middot; Ongoing &middot; Ramadan &middot; Hajj &middot; Umrah</div>
         <div class="usecase-title">Makkah &amp; Madinah<br/>Holy Mosques</div>
@@ -735,7 +950,7 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
     </div>
 
     <div class="usecase-featured reveal" style="transition-delay:0.1s">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_JRC71B8va7MMXil-pCXJMFpLFC034jLbJ8u3nJtndUWUufTCJxLlJhM6ZMDWBzDE5SUx14UNc54lAhw2DhyAefHJCxSKTpHWQ829B926OS8CcnOXAzgAvxHIOAwf8FdJOh_wlxjMjV_4Wj3T-lm5rPMVZlhJ6aI4VDFRcGdjCwkYwj-Q7LJMVmLldOt95Fbl10agqTW7doMvM1-OvtWRQE9XTChXc7lUm9hwcP9I6GrNJyv-F4aLZ1QC8cVnIzz5R5fGpp24mPs" alt="Paris 2024 Olympics"/>
+      <img src="https://images.pexels.com/photos/30651230/pexels-photo-30651230.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Crowded stadium during a major international sports event"/>
       <div class="usecase-content">
         <div class="usecase-tag">IOC &middot; COJO &middot; French Government &middot; Paris 2024</div>
         <div class="usecase-title">Paris 2024<br/>Olympic Games</div>
@@ -758,7 +973,7 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
     </div>
 
     <div class="usecase-featured reveal" style="transition-delay:0.2s">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoVNCRj0eDxKu_fd1Ca2c5Z2yJjUl_BtFguAArVxxWcxRvUJIFWYPnYS9ccGuG6HJnT9x4wjsjdJYOqjt8howk4vIoDSoBzXfFOUNt7GB7rMqjAfA80rg8RPqZ2k96ioTxzFUCSd493XV8IcYwcxOEx4TCKsWWZCgMrXHM_FlgNFSKfByUwlb81D2dK47CWQ--QoSD3gMLpfKAe4UEoM6BEVqvaiA_788_Ztnlr_P3e6_vJ3g9MyScjZTCoDmH5-hEka5mFPdNe0M" alt="FIFA World Cup Qatar 2022"/>
+      <img src="https://images.pexels.com/photos/18016847/pexels-photo-18016847.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Busy metro platform crowd representing large-scale transport flow"/>
       <div class="usecase-content">
         <div class="usecase-tag">FIFA &middot; Qatar Rail &middot; Doha Metro &middot; 2022</div>
         <div class="usecase-title">FIFA World Cup<br/>Qatar 2022</div>
@@ -802,7 +1017,8 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
 
 
 <!-- ═══ TECHNOLOGY PARTNERS ══════════════════════════════ -->
-<section id="partners">
+<section id="partners" class="section-transition">
+  <div class="section-panel-glow"></div>
   <div class="section-header reveal">
     <div>
       <div class="label" style="margin-bottom:16px">الشركاء التقنيون</div>
@@ -863,7 +1079,7 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
 </section>
 
 <!-- ═══ VISION 2030 ══════════════════════════════════════ -->
-<section id="vision" class="section">
+<section id="vision" class="section section-transition">
   <div class="section-header reveal">
     <div class="label" style="margin-bottom:16px">قيَّمنا لرؤية ٢٠٣٠</div>
     <h2 class="display-lg">Built for<br/>Vision 2030</h2>
@@ -892,7 +1108,7 @@ footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px sol
 </section>
 
 <!-- ═══ CONTACT ═══════════════════════════════════════════ -->
-<section id="contact">
+<section id="contact" class="section-transition">
   <div class="contact-label label">لنبدأ الحوار</div>
   <h2 class="contact-headline">Start the<br/>Conversation</h2>
   <div class="contact-grid">
@@ -1009,18 +1225,24 @@ hl.innerHTML = words.map(w =>
 ).join('');
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.defaults({ ease: 'power3.out', duration: 0.9 });
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Hero entrance sequence
-const tl = gsap.timeline({ delay: 0.3 });
-tl.to('.hero-word-inner', {
-  y: 0, duration: 1.1, ease: 'expo.out',
-  stagger: 0.09
-})
-.to('.hero-label', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.6')
-.to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5')
-.to('.stats-row', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
-.to('.hero-ctas', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3')
-.to('.scroll-hint', { opacity: 1, duration: 0.6 }, '-=0.2');
+if (reduceMotion) {
+  gsap.set(['.hero-word-inner', '.hero-label', '.hero-subtitle', '.stats-row', '.hero-ctas', '.scroll-hint'], { clearProps: 'all', opacity: 1, y: 0 });
+} else {
+  const tl = gsap.timeline({ delay: 0.24 });
+  tl.to('.hero-word-inner', {
+    y: 0, duration: 1.15, ease: 'expo.out',
+    stagger: 0.085
+  })
+  .to('.hero-label', { opacity: 1, y: 0, duration: 0.72 }, '-=0.62')
+  .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.82 }, '-=0.54')
+  .to('.stats-row', { opacity: 1, y: 0, duration: 0.72 }, '-=0.46')
+  .to('.hero-ctas', { opacity: 1, y: 0, duration: 0.64 }, '-=0.34')
+  .to('.scroll-hint', { opacity: 1, duration: 0.64 }, '-=0.24');
+}
 
 /* ── COUNTUP STATS ──────────────────────────────────────── */
 const statConfigs = [
@@ -1031,43 +1253,46 @@ const statConfigs = [
 ];
 
 let statsTriggered = false;
-ScrollTrigger.create({
-  trigger: '.stats-row',
-  start: 'top 80%',
-  onEnter: () => {
-    if (statsTriggered) return;
-    statsTriggered = true;
-    statConfigs.forEach(cfg => {
-      const el = document.getElementById(cfg.id);
-      if (!el) return;
-      const cu = new countUp.CountUp(cfg.id, cfg.end, {
-        duration: 2.2,
-        decimalPlaces: cfg.decimal,
-        suffix: cfg.suffix,
-        useEasing: true,
-        useGrouping: false,
+if (!reduceMotion) {
+  ScrollTrigger.create({
+    trigger: '.stats-row',
+    start: 'top 80%',
+    onEnter: () => {
+      if (statsTriggered) return;
+      statsTriggered = true;
+      statConfigs.forEach(cfg => {
+        const el = document.getElementById(cfg.id);
+        if (!el) return;
+        const cu = new countUp.CountUp(cfg.id, cfg.end, {
+          duration: 2.2,
+          decimalPlaces: cfg.decimal,
+          suffix: cfg.suffix,
+          useEasing: true,
+          useGrouping: false,
+        });
+        cu.start();
       });
-      cu.start();
-    });
-  }
-});
+    }
+  });
+}
 
 /* ── SECTION REVEALS (ScrollTrigger) ────────────────────── */
-document.querySelectorAll('.reveal').forEach(el => {
-  gsap.fromTo(el,
-    { opacity: 0, y: 60 },
-    {
-      opacity: 1, y: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 88%',
-        once: true,
+if (!reduceMotion) {
+  document.querySelectorAll('.reveal').forEach(el => {
+    gsap.fromTo(el,
+      { opacity: 0, y: 60 },
+      {
+        opacity: 1, y: 0,
+        duration: 0.96,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          once: true,
+        }
       }
-    }
-  );
-});
+    );
+  });
+}
 
 /* ── DEPLOY SCROLL DRAG ─────────────────────────────────── */
 function makeDraggable(el) {
@@ -1105,20 +1330,30 @@ sections.forEach(id => {
 });
 
 /* ── PARALLAX HERO BG ───────────────────────────────────── */
-gsap.to('.hero-bg', {
-  yPercent: 20,
-  ease: 'none',
-  scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
-});
+if (!reduceMotion) {
+  gsap.to('.hero-bg', {
+    yPercent: 20,
+    ease: 'none',
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
+  });
+}
 
 /* ── PILLAR IMAGE PARALLAX ──────────────────────────────── */
-document.querySelectorAll('.pillar-image img').forEach(img => {
-  gsap.fromTo(img,
-    { yPercent: -8 },
-    { yPercent: 8, ease: 'none',
-      scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
-    }
-  );
+if (!reduceMotion) {
+  document.querySelectorAll('.pillar-image img, .pillar-image video').forEach(media => {
+    gsap.fromTo(media,
+      { yPercent: -8 },
+      { yPercent: 8, ease: 'none',
+        scrollTrigger: { trigger: media.parentElement, start: 'top bottom', end: 'bottom top', scrub: 0.7 }
+      }
+    );
+  });
+}
+
+document.querySelectorAll('.infra-video video').forEach(video => {
+  video.addEventListener('loadedmetadata', () => {
+    if (video.duration > 2) video.currentTime = 2;
+  }, { once: true });
 });
 </script>
 </body>
