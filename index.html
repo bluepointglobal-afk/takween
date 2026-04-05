@@ -1,1359 +1,529 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TAKWEEN | Infrastructure Intelligence</title>
-<meta name="description" content="Data Centre Intelligence & Autonomous Robotics for the Kingdom of Saudi Arabia."/>
-
-<!-- Fonts -->
+<title>TAKWEEN | Infrastructure Intelligence for the Kingdom</title>
+<meta name="description" content="Data Centre Intelligence, Autonomous Robotics &amp; Critical Infrastructure for the Kingdom of Saudi Arabia."/>
+<meta name="theme-color" content="#0A0A08"/>
+<meta property="og:title" content="TAKWEEN | Infrastructure Intelligence"/>
+<meta property="og:description" content="Data Centre Intelligence &amp; Autonomous Robotics for the Kingdom of Saudi Arabia."/>
+<meta property="og:type" content="website"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Tajawal:wght@400;700&display=swap" rel="stylesheet"/>
-
-<!-- GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-<!-- CountUp -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.js"></script>
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <style>
-/* ─── RESET & TOKENS ─────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--black:#0A0A08;--black-warm:#0F0E0B;--surface:#141310;--surface-up:#1A1915;
+--border:rgba(202,138,4,0.10);--border-on:rgba(202,138,4,0.28);
+--gold:#CA8A04;--gold-lt:#E5B94E;--gold-dim:rgba(202,138,4,0.40);
+--white:#F5F0E8;--white-dim:rgba(245,240,232,0.72);--muted:#7A756A;--dim:#3D3A33;
+--serif:'Cormorant Garamond','Georgia',serif;--sans:'Jost',sans-serif;
+--ease:cubic-bezier(0.16,1,0.3,1);--container:1320px;--gutter:72px;
+}
+@media(max-width:768px){:root{--gutter:24px}}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:var(--black);color:var(--white);font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.6;overflow-x:hidden}
+::selection{background:var(--gold);color:var(--black)}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--gold-dim)}
+img,video{display:block;max-width:100%}a{color:inherit;text-decoration:none}
+body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px}
+.container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
 
-:root {
-  --bg:        #0a0a0f;
-  --bg-dim:    #0e0e13;
-  --bg-low:    #111117;
-  --surface:   #16161d;
-  --surface-hi:#1c1c24;
-  --border:    rgba(201,168,76,0.12);
-  --gold:      #C9A84C;
-  --gold-dim:  rgba(201,168,76,0.35);
-  --white:     #F0EDE6;
-  --muted:     #6B6B7B;
-  --dim:       #3A3A4A;
-  --mono:      'IBM Plex Mono', monospace;
-  --arabic:    'Tajawal', sans-serif;
-  /* Display font stack — closest open-source to Söhne */
-  --display:   'Helvetica Neue', 'Arial Black', sans-serif;
-  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --dur-fast: 220ms;
-  --dur-base: 420ms;
-  --dur-slow: 760ms;
-}
+/* Typography */
+.t-hero{font-family:var(--serif);font-size:clamp(52px,8.5vw,140px);font-weight:300;line-height:0.92;letter-spacing:-0.025em}
+.t-lg{font-family:var(--serif);font-size:clamp(38px,5.5vw,88px);font-weight:300;line-height:0.95;letter-spacing:-0.02em}
+.t-md{font-family:var(--serif);font-size:clamp(28px,3.5vw,56px);font-weight:400;line-height:1.05}
+.t-label{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+.t-gi{font-family:var(--serif);font-style:italic;color:var(--gold)}
 
-html { scroll-behavior: smooth; }
+/* Cursor */
+@media(pointer:fine){body{cursor:none}a,button{cursor:none}}
+#cur{width:8px;height:8px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:10001;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),background .3s var(--ease);mix-blend-mode:difference}
+#cur-g{width:40px;height:40px;border:1px solid rgba(202,138,4,0.25);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:width .5s var(--ease),height .5s var(--ease)}
+body:has(a:hover) #cur,body:has(button:hover) #cur{width:40px;height:40px;background:transparent;border:1px solid var(--gold);mix-blend-mode:normal}
 
-body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: var(--display);
-  overflow-x: hidden;
-  cursor: none;
-}
+/* Nav */
+#nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:32px var(--gutter);transition:all .6s var(--ease)}
+#nav.scrolled{padding:18px var(--gutter);background:rgba(10,10,8,0.88);backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;flex-direction:column;gap:2px}
+.nav-logo-en{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase}
+.nav-logo-sub{font-size:9px;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-dim)}
+.nav-links{display:flex;gap:48px;position:absolute;left:50%;transform:translateX(-50%)}
+.nav-links a{font-size:12px;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);position:relative;padding-bottom:4px;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease)}
+.nav-links a:hover{color:var(--white)}.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-links a.active{color:var(--gold)}.nav-links a.active::after{transform:scaleX(1)}
+@media(max-width:1024px){.nav-links{display:none}}
+.btn{font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);padding:12px 28px;background:rgba(202,138,4,0.06);border:1px solid var(--border-on);backdrop-filter:blur(12px);transition:all .4s var(--ease);display:inline-flex;align-items:center;gap:10px}
+.btn:hover{background:var(--gold);color:var(--black);border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 32px rgba(202,138,4,0.2)}
+.btn-o{font-family:var(--sans);font-size:12px;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 28px;background:transparent;border:1px solid var(--dim);transition:all .4s var(--ease);display:inline-flex;align-items:center;gap:10px}
+.btn-o:hover{color:var(--white);border-color:var(--white-dim);transform:translateY(-2px)}
 
-/* ─── CUSTOM CURSOR ──────────────────────────────────── */
-#cursor {
-  width: 12px; height: 12px;
-  background: var(--gold);
-  border-radius: 50%;
-  position: fixed; top: 0; left: 0;
-  pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: transform var(--dur-fast) var(--ease-soft), width var(--dur-fast) var(--ease-soft), height var(--dur-fast) var(--ease-soft), background var(--dur-fast) var(--ease-soft);
-  mix-blend-mode: normal;
-}
-#cursor-ring {
-  width: 36px; height: 36px;
-  border: 1px solid var(--gold-dim);
-  border-radius: 50%;
-  position: fixed; top: 0; left: 0;
-  pointer-events: none; z-index: 9998;
-  transform: translate(-50%,-50%);
-  transition: all 120ms linear;
-}
-body:has(a:hover) #cursor,
-body:has(button:hover) #cursor { width: 24px; height: 24px; background: transparent; border: 1px solid var(--gold); }
+/* Hero */
+#hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;padding-bottom:80px;overflow:hidden}
+#shader{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero-over{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,8,0.3) 0%,rgba(10,10,8,0) 30%,rgba(10,10,8,0) 50%,rgba(10,10,8,0.7) 80%,var(--black) 100%),linear-gradient(90deg,rgba(10,10,8,0.6) 0%,rgba(10,10,8,0) 50%);pointer-events:none}
+.hero-ct{position:relative;z-index:2;max-width:var(--container);margin:0 auto;padding:0 var(--gutter);width:100%}
+.hero-lr{display:flex;align-items:center;gap:20px;margin-bottom:32px;opacity:0;transform:translateY(20px)}
+.hero-ll{width:48px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+.hero-hl{overflow:hidden;margin-bottom:24px}
+.hero-w{display:inline-block;overflow:hidden;margin-right:0.22em}.hero-wi{display:inline-block;transform:translateY(115%);will-change:transform}
+.hero-sub{font-size:clamp(16px,1.8vw,22px);font-weight:300;color:var(--muted);max-width:560px;line-height:1.65;margin-bottom:56px;opacity:0;transform:translateY(20px)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--border);padding-top:40px;margin-bottom:48px;opacity:0;transform:translateY(20px)}
+@media(max-width:640px){.hero-stats{grid-template-columns:repeat(2,1fr);gap:32px 0}}
+.hs-num{font-family:var(--serif);font-size:clamp(32px,4vw,52px);font-weight:300;color:var(--gold);line-height:1;letter-spacing:-0.02em}
+.hs-lab{font-size:11px;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.hero-ctas{display:flex;gap:20px;flex-wrap:wrap;opacity:0;transform:translateY(20px)}
+.hero-scroll{position:absolute;bottom:48px;right:var(--gutter);z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0}
+.hero-scroll-t{font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);writing-mode:vertical-rl}
+.hero-scroll-l{width:1px;height:48px;background:linear-gradient(180deg,var(--gold),transparent);animation:sp 2.4s ease-in-out infinite}
+@keyframes sp{0%,100%{opacity:0.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(0.5)}}
+@media(max-width:768px){.hero-scroll{display:none}}
 
-/* ─── TYPOGRAPHY HELPERS ────────────────────────────── */
-.mono { font-family: var(--mono); }
-.arabic { font-family: var(--arabic); direction: rtl; }
-.label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.display-xl {
-  font-size: clamp(56px, 9vw, 120px);
-  font-weight: 900;
-  line-height: 0.88;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
-}
-.display-lg {
-  font-size: clamp(40px, 6vw, 84px);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-}
-.display-md {
-  font-size: clamp(28px, 4vw, 52px);
-  font-weight: 900;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
+/* Ticker */
+#ticker{padding:20px 0;overflow:hidden;background:var(--black-warm);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.tk-track{display:flex;white-space:nowrap;animation:tk 40s linear infinite;will-change:transform}
+#ticker:hover .tk-track{animation-play-state:paused}
+.tk-item{font-size:11px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;color:rgba(245,240,232,0.18);padding:0 36px;display:flex;align-items:center;gap:36px;flex-shrink:0}
+.tk-dot{width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:0.5;flex-shrink:0}
+@keyframes tk{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-/* ─── LAYOUT ─────────────────────────────────────────── */
-.container { max-width: 1400px; margin: 0 auto; padding: 0 64px; }
-@media (max-width: 768px) { .container { padding: 0 24px; } }
+/* Sections */
+.sec{padding:140px 0;position:relative}
+@media(max-width:768px){.sec{padding:80px 0}}
+.sec-hd{margin-bottom:80px}
+.rv{opacity:0;transform:translateY(48px);will-change:transform,opacity}
 
-/* ─── SCROLLBAR ──────────────────────────────────────── */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--gold-dim); }
-.hide-scroll::-webkit-scrollbar { display: none; }
-.hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+/* Pillars */
+.pil{position:relative;margin-bottom:2px;overflow:hidden}
+.pil-media{position:absolute;inset:0;overflow:hidden}
+.pil-media video{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.pil:hover .pil-media video{transform:scale(1.04)}
+.pil-media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,8,0.85) 0%,rgba(10,10,8,0.4) 40%,rgba(10,10,8,0.75) 100%),linear-gradient(90deg,rgba(10,10,8,0.7) 0%,rgba(10,10,8,0.2) 60%);pointer-events:none}
+.pil-in{position:relative;z-index:2;max-width:var(--container);margin:0 auto;padding:100px var(--gutter) 80px;display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:end;min-height:680px}
+@media(max-width:900px){.pil-in{grid-template-columns:1fr;gap:40px;min-height:560px;padding:80px var(--gutter) 56px}}
+.pil-num{font-family:var(--serif);font-size:clamp(80px,10vw,160px);font-weight:300;color:rgba(202,138,4,0.08);line-height:0.8;letter-spacing:-0.04em;position:absolute;top:40px;right:var(--gutter)}
+.pil-name{font-family:var(--serif);font-size:clamp(32px,4vw,56px);font-weight:400;line-height:1.05;margin-bottom:8px}
+.pil-sub{font-size:14px;color:var(--gold-dim);margin-bottom:24px}
+.pil-desc{font-size:15px;color:var(--white-dim);line-height:1.7;max-width:400px}
+.svc-list{display:flex;flex-direction:column}
+.svc{display:grid;grid-template-columns:40px 1fr auto;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--border);transition:all .3s var(--ease)}
+.svc:first-child{border-top:1px solid var(--border)}
+.svc:hover{border-color:var(--border-on);transform:translateX(4px)}
+.svc-n{font-family:var(--serif);font-size:14px;color:var(--gold-dim);font-style:italic}
+.svc-t{font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--white)}
+.svc-d{font-size:12px;color:var(--muted);text-align:right;max-width:240px}
+@media(max-width:640px){.svc{grid-template-columns:32px 1fr}.svc-d{display:none}}
 
-/* ─── NAV ────────────────────────────────────────────── */
-#nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 28px 64px;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: padding var(--dur-base) var(--ease-standard), background var(--dur-base) var(--ease-standard), backdrop-filter var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard), box-shadow var(--dur-base) var(--ease-standard);
-  border-bottom: 1px solid transparent;
-}
-#nav.scrolled {
-  padding: 16px 64px;
-  background: rgba(10,10,15,0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-color: var(--border);
-  box-shadow: 0 14px 40px rgba(0,0,0,0.22);
-}
-@media (max-width: 768px) { #nav { padding: 20px 24px; } #nav.scrolled { padding: 14px 24px; } }
+/* Deploy — redesigned with expandable cards */
+#deploy{background:var(--black-warm);overflow:hidden}
+.deploy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:64px}
+@media(max-width:900px){.deploy-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.deploy-grid{grid-template-columns:1fr}}
+.deploy-card{position:relative;overflow:hidden;min-height:400px;display:flex;align-items:flex-end;transition:all .6s var(--ease)}
+.deploy-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.45) saturate(0.8);transition:all .8s var(--ease)}
+.deploy-card:hover img{filter:brightness(0.6) saturate(0.95);transform:scale(1.05)}
+.deploy-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(10,10,8,0.95) 100%);pointer-events:none}
+.deploy-card-ct{position:relative;z-index:2;padding:32px;width:100%}
+.deploy-card-name{font-family:var(--serif);font-size:22px;font-weight:400;margin-bottom:4px}
+.deploy-card-tag{font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.deploy-card-body{font-size:13px;color:var(--white-dim);line-height:1.6;max-height:0;overflow:hidden;transition:max-height .5s var(--ease),opacity .4s;opacity:0}
+.deploy-card:hover .deploy-card-body{max-height:200px;opacity:1}
+.deploy-card-more{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dim);margin-top:8px;display:flex;align-items:center;gap:6px;transition:all .3s}
+.deploy-card:hover .deploy-card-more{color:var(--gold)}
+.deploy-card-more span{transition:transform .3s var(--ease);display:inline-block}
+.deploy-card:hover .deploy-card-more span{transform:rotate(90deg)}
 
-.nav-logo { display: flex; flex-direction: column; line-height: 1; }
-.nav-logo-en {
-  font-size: 20px; font-weight: 900;
-  letter-spacing: 0.14em; color: var(--gold);
-  text-transform: uppercase;
-}
-.nav-logo-ar { font-family: var(--arabic); font-size: 11px; color: var(--gold); opacity: 0.6; margin-top: 2px; direction: rtl; }
+/* Proven */
+.uc-feat{position:relative;overflow:hidden;display:flex;align-items:flex-end}
+.uc-collage{position:absolute;inset:0;display:grid;grid-template-columns:1.2fr 1fr;gap:2px}
+.uc-collage-p{position:relative;overflow:hidden}
+.uc-collage-p img{width:100%;height:100%;object-fit:cover;filter:brightness(0.4) saturate(0.85);transition:all 1s var(--ease)}
+.uc-feat:hover .uc-collage-p img{transform:scale(1.03);filter:brightness(0.5) saturate(0.9)}
+.uc-collage-p::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,8,0.5) 0%,rgba(10,10,8,0.15) 40%,rgba(10,10,8,0.7) 100%)}
+.uc-ct{position:relative;z-index:2;max-width:var(--container);margin:0 auto;padding:120px var(--gutter) 72px;width:100%}
+.uc-tag{font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.uc-title{font-family:var(--serif);font-size:clamp(32px,5vw,64px);font-weight:300;line-height:0.95;margin-bottom:8px}
+.uc-body{font-size:14px;color:var(--white-dim);line-height:1.7;max-width:560px;margin-bottom:32px}
+.uc-stats{display:flex;gap:40px;flex-wrap:wrap;margin-bottom:24px}
+.ucs-n{font-family:var(--serif);font-size:clamp(24px,3vw,40px);font-weight:300;color:var(--gold);line-height:1}
+.ucs-l{font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.uc-caps{display:flex;gap:8px;flex-wrap:wrap}
+.uc-cap{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:6px 12px;border:1px solid var(--border-on);color:var(--muted);transition:all .3s}
+.uc-duo{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+@media(max-width:900px){.uc-duo{grid-template-columns:1fr}}
+.uc-card{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:flex-end}
+.uc-card-m{position:absolute;inset:0}
+.uc-card-m img{width:100%;height:100%;object-fit:cover;filter:brightness(0.35);transition:all .8s var(--ease)}
+.uc-card:hover .uc-card-m img{transform:scale(1.04);filter:brightness(0.45)}
+.uc-card-m::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(10,10,8,0.95) 100%)}
+.uc-card-ct{position:relative;z-index:2;padding:48px 40px;width:100%}
 
-.nav-links { display: flex; gap: 44px; }
-.nav-links a {
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--muted); text-decoration: none;
-  transition: color var(--dur-fast) var(--ease-soft); position: relative; padding-bottom: 2px;
-}
-.nav-links a::after {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-  height: 1px; background: var(--gold); transform: scaleX(0);
-  transition: transform var(--dur-fast) var(--ease-soft);
-}
-.nav-links a:hover { color: var(--white); }
-.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
-.nav-links a.active { color: var(--gold); }
+/* Proof grid with spotlight */
+.pf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:2px}
+@media(max-width:1024px){.pf-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.pf-grid{grid-template-columns:1fr}}
+.sp-card{background:var(--surface);padding:44px 36px;min-height:300px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;border:1px solid transparent;transition:all .5s var(--ease)}
+.sp-card::before{content:'';position:absolute;top:var(--my,50%);left:var(--mx,50%);width:300px;height:300px;background:radial-gradient(circle,rgba(202,138,4,0.08),transparent 70%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .4s}
+.sp-card:hover::before{opacity:1}
+.sp-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.sp-card:hover{border-color:var(--border);background:var(--surface-up);transform:translateY(-4px)}
+.sp-card:hover::after{transform:scaleX(1)}
+.pf-tag{font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.pf-num{font-family:var(--serif);font-size:clamp(32px,4vw,52px);font-weight:300;color:var(--gold);line-height:1;margin-bottom:8px}
+.pf-title{font-family:var(--serif);font-size:clamp(18px,2vw,24px);font-weight:400;line-height:1.15;margin-bottom:20px}
+.pf-body{font-size:13px;color:var(--muted);line-height:1.65}
 
-.nav-cta {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--gold);
-  border: 1px solid var(--gold); padding: 10px 20px;
-  background: transparent; cursor: none; text-decoration: none;
-  transition: background var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft);
-}
-.nav-cta:hover { background: var(--gold); color: #1a1200; transform: translateY(-1px); }
+/* Partners — technology ecosystem */
+#partners{background:var(--black-warm);overflow:hidden}
+.part-hdr{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px}
+.part-section{margin-bottom:48px}
+.part-section-label{font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px;padding-left:4px}
+.part-row{display:flex;gap:2px;flex-wrap:wrap}
+.part-c{flex:0 0 180px;height:100px;background:var(--surface);border-left:2px solid rgba(202,138,4,0.15);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;opacity:0.4;transition:all .5s var(--ease)}
+.part-c:hover{opacity:1;border-color:var(--gold);background:var(--surface-up);transform:translateY(-4px)}
+.part-n{font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--white)}
+.part-co{font-size:9px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase}
 
-@media (max-width: 900px) { .nav-links { display: none; } }
+/* Team */
+#team{background:var(--black)}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:64px}
+@media(max-width:900px){.team-grid{grid-template-columns:1fr}}
+.team-card{background:var(--surface);overflow:hidden;transition:all .5s var(--ease)}
+.team-card:hover{background:var(--surface-up)}
+.team-img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;filter:grayscale(0.3);transition:all .8s var(--ease)}
+.team-card:hover .team-img{filter:grayscale(0)}
+.team-info{padding:32px 28px}
+.team-name{font-family:var(--serif);font-size:22px;font-weight:400;margin-bottom:4px}
+.team-role{font-size:11px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.team-bio{font-size:13px;color:var(--muted);line-height:1.65;max-height:0;overflow:hidden;transition:max-height .6s var(--ease),opacity .4s;opacity:0}
+.team-card:hover .team-bio{max-height:400px;opacity:1}
+.team-expand{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dim);display:flex;align-items:center;gap:6px;margin-top:8px}
+.team-card:hover .team-expand{color:var(--gold)}
 
-/* ─── HERO ───────────────────────────────────────────── */
-#hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 0 64px 72px; position: relative; overflow: hidden;
-}
-#hero::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 180px;
-  background: linear-gradient(to bottom, rgba(10,10,15,0), rgba(10,10,15,0.88) 58%, var(--bg) 100%);
-  z-index: 1;
-  pointer-events: none;
-}
-@media (max-width: 768px) { #hero { padding: 0 24px 48px; } }
+/* Vision 2030 */
+.vis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:80px}
+@media(max-width:900px){.vis-grid{grid-template-columns:1fr}}
+.vis-i{padding:48px 40px;border-left:1px solid var(--border);transition:border-color .4s}
+.vis-i:first-child{border-left:none}
+@media(max-width:900px){.vis-i{border-left:none;border-bottom:1px solid var(--border);padding:40px 0}.vis-i:last-child{border-bottom:none}}
+.vis-i:hover{border-color:var(--border-on)}
+.vis-num{font-family:var(--serif);font-size:clamp(56px,7vw,96px);font-weight:300;color:rgba(202,138,4,0.15);line-height:0.9;letter-spacing:-0.04em;margin-bottom:28px}
+.vis-t{font-size:14px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:20px}
+.vis-body{font-size:14px;color:var(--muted);line-height:1.7}
 
-.hero-bg {
-  position: absolute; inset: 0; z-index: 0;
-  opacity: 0.18;
-}
-.hero-bg video {
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-.hero-vignette {
-  position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(to top, var(--bg) 0%, transparent 50%),
-              linear-gradient(to right, var(--bg) 0%, transparent 40%);
-}
-/* Animated grid overlay */
-.hero-grid {
-  position: absolute; inset: 0; z-index: 1;
-  background-image:
-    linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-  background-size: 80px 80px;
-  animation: gridDrift 20s ease-in-out infinite alternate;
-}
-@keyframes gridDrift {
-  0%   { transform: translate(0, 0); }
-  100% { transform: translate(-20px, -20px); }
-}
+/* Contact */
+#contact{background:var(--black-warm);border-top:1px solid var(--border)}
+.con-hl{margin-bottom:80px}
+.con-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:768px){.con-grid{grid-template-columns:1fr}}
+.con-p{padding:56px 56px 56px 0;display:flex;flex-direction:column;justify-content:space-between;min-height:280px}
+.con-p.r{padding:56px 0 56px 56px;border-left:1px solid var(--gold)}
+@media(max-width:768px){.con-p{padding:40px 0}.con-p.r{padding:40px 0;border-left:none;border-top:1px solid var(--gold)}}
+.con-type{font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.con-title{font-family:var(--serif);font-size:clamp(28px,3.5vw,44px);font-weight:300;line-height:1.05}
+.con-el{font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.con-email{font-family:var(--serif);font-size:clamp(18px,2.2vw,28px);font-weight:300;display:inline-flex;align-items:center;gap:12px;transition:all .3s var(--ease)}
+.con-email:hover{color:var(--gold);gap:20px}
 
-.hero-content { position: relative; z-index: 2; max-width: 1100px; }
+/* Footer */
+footer{background:var(--black);padding:72px 0 48px;border-top:1px solid var(--border)}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:64px;margin-bottom:64px}
+@media(max-width:768px){.ft-grid{grid-template-columns:1fr;gap:40px}}
+.ft-logo{font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;margin-bottom:20px}
+.ft-tag{font-size:13px;color:var(--muted);line-height:1.8}
+.ft-cl{font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.ft-links{display:flex;flex-direction:column;gap:14px}
+.ft-links a{font-size:13px;color:var(--muted);transition:all .3s}.ft-links a:hover{color:var(--white)}
+.ft-bot{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.ft-copy{font-size:11px;letter-spacing:0.08em;color:var(--dim)}
 
-.hero-label { margin-bottom: 28px; opacity: 0; }
-.hero-word { display: inline-block; overflow: hidden; }
-.hero-word-inner { display: inline-block; transform: translateY(110%); }
-
-.hero-subtitle { font-size: clamp(16px, 2.2vw, 26px); font-weight: 300; color: var(--muted); max-width: 620px; margin: 28px 0 56px; opacity: 0; line-height: 1.5; }
-
-/* Stats */
-.stats-row {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 0; border-top: 1px solid var(--border); padding-top: 44px;
-  margin-bottom: 52px; opacity: 0;
-}
-@media (max-width: 640px) { .stats-row { grid-template-columns: repeat(2, 1fr); gap: 24px 0; } }
-.stat-item { padding-right: 32px; }
-.stat-num {
-  font-size: clamp(28px, 3.5vw, 44px); font-weight: 900; color: var(--gold);
-  line-height: 1; letter-spacing: -0.02em; margin-bottom: 6px;
-}
-.stat-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
-
-/* CTAs */
-.hero-ctas { display: flex; gap: 48px; flex-wrap: wrap; opacity: 0; }
-.cta-link {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--white); text-decoration: none;
-  border-bottom: 1px solid var(--gold); padding-bottom: 4px;
-  display: inline-flex; align-items: center; gap: 12px;
-  transition: color var(--dur-fast) var(--ease-soft), gap var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft);
-}
-.cta-link:hover { color: var(--gold); gap: 20px; }
-.cta-link.secondary { border-color: transparent; color: var(--muted); }
-.cta-link.secondary:hover { color: var(--white); border-color: var(--dim); }
-.cta-arrow { display: inline-block; transition: transform var(--dur-fast) var(--ease-soft); font-size: 16px; }
-.cta-link:hover .cta-arrow { transform: translateX(6px); }
-
-/* Scroll indicator */
-.scroll-hint {
-  position: absolute; bottom: 48px; right: 64px; z-index: 2;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  opacity: 0;
-}
-@media (max-width: 768px) { .scroll-hint { display: none; } }
-.scroll-hint-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; }
-.scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease-in-out infinite; }
-@keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(0.6)} }
-
-/* ─── TICKER ─────────────────────────────────────────── */
-#ticker {
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 20px 0; overflow: hidden; background: var(--bg-dim);
-  position: relative;
-  isolation: isolate;
-}
-#ticker::before,
-#ticker::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0;
-  height: 72px;
-  pointer-events: none;
-  z-index: 1;
-}
-#ticker::before {
-  top: -1px;
-  background: linear-gradient(to bottom, rgba(10,10,15,0.72), rgba(10,10,15,0));
-}
-#ticker::after {
-  bottom: -1px;
-  background: linear-gradient(to top, rgba(10,10,15,0.72), rgba(10,10,15,0));
-}
-.ticker-track {
-  display: flex; white-space: nowrap;
-  animation: ticker 35s linear infinite;
-  will-change: transform;
-}
-#ticker:hover .ticker-track { animation-play-state: paused; }
-.ticker-item {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: rgba(240,237,230,0.3);
-  padding: 0 40px; display: flex; align-items: center; gap: 40px;
-}
-.ticker-dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; opacity: 0.6; }
-@keyframes ticker {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* ─── SECTIONS COMMON ────────────────────────────────── */
-.section { padding: 120px 64px; position: relative; isolation: isolate; }
-@media (max-width: 768px) { .section { padding: 80px 24px; } }
-.section-header { margin-bottom: 80px; }
-
-.reveal { opacity: 0; transform: translateY(60px); will-change: transform, opacity; }
-.section-transition::before,
-.section-transition::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0;
-  height: 110px;
-  pointer-events: none;
-  z-index: 0;
-}
-.section-transition::before {
-  top: 0;
-  background: linear-gradient(to bottom, rgba(10,10,15,0.75), rgba(10,10,15,0));
-}
-.section-transition::after {
-  bottom: 0;
-  background: linear-gradient(to top, rgba(10,10,15,0.75), rgba(10,10,15,0));
-}
-
-/* ─── TWO PILLARS ────────────────────────────────────── */
-#pillars { background: var(--bg); }
-.pillar {
-  position: relative;
-  min-height: clamp(620px, 78vw, 920px);
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 120px;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  overflow: hidden;
-  background: var(--bg);
-}
-.pillar:last-child { margin-bottom: 0; }
-.pillar::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to top, rgba(10,10,15,0.92) 0%, rgba(10,10,15,0.5) 34%, rgba(10,10,15,0.16) 60%, rgba(10,10,15,0.68) 100%),
-    linear-gradient(to right, rgba(10,10,15,0.78) 0%, rgba(10,10,15,0.42) 34%, rgba(10,10,15,0.08) 64%, rgba(10,10,15,0.3) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.pillar-name { font-size: clamp(24px, 3vw, 36px); font-weight: 900; margin-bottom: 6px; text-transform: uppercase; letter-spacing: -0.01em; }
-.pillar-ar { font-family: var(--arabic); font-size: 18px; color: var(--gold); margin-bottom: 44px; direction: rtl; text-align: left; }
-.service-list { display: flex; flex-direction: column; gap: 0; }
-.service-item {
-  display: flex; align-items: center; gap: 28px;
-  border-bottom: 1px solid var(--border); padding: 18px 0;
-  transition: border-color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft);
-}
-.service-item:hover { border-color: var(--gold-dim); transform: translateX(4px); }
-.service-num { font-family: var(--mono); font-size: 10px; color: var(--gold); letter-spacing: 0.1em; flex-shrink: 0; width: 24px; }
-.service-name { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white); }
-.service-desc { font-size: 12px; color: var(--muted); margin-left: auto; text-align: right; max-width: 220px; }
-
-.pillar-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-.pillar-image img,
-.pillar-image video { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-standard), filter var(--dur-base) var(--ease-standard); will-change: transform; }
-.pillar-image:hover img,
-.pillar-image:hover video { transform: scale(1.04); }
-.pillar-image::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10,10,15,0.78), rgba(10,10,15,0.14) 44%, rgba(10,10,15,0.34) 100%);
-  pointer-events: none;
-}
-.pillar-image.dark-video video { filter: brightness(0.24) saturate(0.78) contrast(1.08); }
-.pillar-image.infra-video video { filter: brightness(0.66) saturate(0.92) contrast(1.01); }
-.pillar-content {
-  position: relative;
-  z-index: 2;
-  width: min(100%, 1400px);
-  margin: 0 auto;
-  padding: 88px 64px 72px;
-}
-@media (max-width: 768px) {
-  .pillar {
-    min-height: 640px;
-    margin-bottom: 72px;
-  }
-  .pillar-content { padding: 56px 24px 40px; }
-  .service-item { flex-wrap: wrap; gap: 12px 18px; }
-  .service-desc { margin-left: 42px; max-width: none; text-align: left; }
-}
-
-/* ─── WHERE WE DEPLOY ────────────────────────────────── */
-#deploy { background: var(--bg-dim); overflow: hidden; padding: 120px 0; position: relative; isolation: isolate; }
-#deploy .section-header { padding: 0 64px 0; }
-@media (max-width: 768px) { #deploy .section-header { padding: 0 24px; } }
-
-.section-panel-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(circle at 20% 0%, rgba(201,168,76,0.07), transparent 34%),
-    radial-gradient(circle at 80% 100%, rgba(201,168,76,0.05), transparent 38%);
-}
-.deploy-scroll {
-  display: flex; gap: 3px; overflow-x: auto; padding: 0 64px; margin-top: 60px;
-  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-  position: relative;
-  z-index: 1;
-}
-.deploy-scroll::-webkit-scrollbar { height: 2px; }
-.deploy-scroll::-webkit-scrollbar-thumb { background: var(--gold-dim); }
-@media (max-width: 768px) { .deploy-scroll { padding: 0 24px; } }
-
-.deploy-card {
-  flex-shrink: 0; width: 320px; height: 480px; position: relative;
-  overflow: hidden; scroll-snap-align: start; cursor: none;
-}
-.deploy-card img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease-standard), filter var(--dur-base) var(--ease-standard); filter: brightness(0.7); }
-.deploy-card:hover img { transform: scale(1.06); }
-.deploy-card::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(10,10,15,0.92) 0%, transparent 50%);
-}
-.deploy-info { position: absolute; bottom: 28px; left: 28px; z-index: 2; }
-.deploy-ar { font-family: var(--arabic); font-size: 11px; color: var(--gold); margin-bottom: 6px; }
-.deploy-name { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
-@media (max-width: 640px) { .deploy-card { width: 260px; height: 380px; } }
-
-/* ─── PROVEN ─────────────────────────────────────────── */
-#proven { background: var(--bg); }
-
-/* Featured use-case hero cards */
-.usecase-hero {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 60px;
-}
-@media (max-width: 900px) { .usecase-hero { grid-template-columns: 1fr; } }
-
-.usecase-featured {
-  position: relative; min-height: 520px; overflow: hidden;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 48px 44px; isolation: isolate;
-}
-.usecase-featured.span2 { grid-column: span 2; min-height: 440px; }
-@media (max-width: 900px) { .usecase-featured.span2 { grid-column: span 1; } }
-.usecase-featured img {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; filter: brightness(0.45);
-  transition: transform var(--dur-slow) var(--ease-standard), filter var(--dur-base) var(--ease-standard);
-}
-.usecase-featured:hover img { transform: scale(1.04); filter: brightness(0.55); }
-.usecase-featured::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.3) 50%, transparent 100%);
-}
-.usecase-collage {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: 1.25fr 0.95fr;
-  gap: 2px;
-}
-.usecase-collage-panel {
-  position: relative;
-  overflow: hidden;
-}
-.usecase-collage-panel::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(10,10,15,0.74), rgba(10,10,15,0.18) 48%, rgba(10,10,15,0.28) 100%);
-}
-.usecase-collage-panel img {
-  filter: brightness(0.52) saturate(0.95);
-}
-.usecase-featured:hover .usecase-collage-panel img {
-  transform: scale(1.04);
-  filter: brightness(0.6) saturate(1);
-}
-.usecase-content { position: relative; z-index: 2; }
-.usecase-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
-.usecase-title { font-size: clamp(26px, 3.5vw, 42px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1; margin-bottom: 12px; }
-.usecase-sub { font-family: var(--arabic); font-size: 13px; color: var(--gold); opacity: 0.75; margin-bottom: 20px; direction: rtl; text-align: left; }
-.usecase-desc { font-size: 13px; color: rgba(240,237,230,0.65); line-height: 1.6; max-width: 480px; margin-bottom: 28px; }
-
-/* Stats strip inside use-case card */
-.usecase-stats { display: flex; gap: 32px; flex-wrap: wrap; }
-.usecase-stat {}
-.usecase-stat-num { font-size: clamp(22px, 2.8vw, 32px); font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -0.02em; }
-.usecase-stat-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
-
-/* Capability tags */
-.usecase-caps { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
-.usecase-cap {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-  border: 1px solid rgba(201,168,76,0.25); padding: 5px 10px; color: var(--muted);
-}
-
-/* Grid of smaller supporting cards */
-.proven-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 2px; }
-@media (max-width: 1024px) { .proven-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .proven-grid { grid-template-columns: 1fr; } }
-.proven-card {
-  background: var(--surface); padding: 40px 32px;
-  min-height: 320px; display: flex; flex-direction: column; justify-content: space-between;
-  transition: background var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard); position: relative; overflow: hidden;
-  border: 1px solid transparent;
-}
-.proven-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: var(--gold); transform: scaleX(0);
-  transition: transform var(--dur-base) var(--ease-standard); transform-origin: left;
-}
-.proven-card:hover { background: var(--surface-hi); transform: translateY(-6px); border-color: var(--border); }
-.proven-card:hover::before { transform: scaleX(1); }
-.proven-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
-.proven-title { font-size: clamp(18px, 2vw, 24px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.1; }
-.proven-subtitle { font-family: var(--mono); font-size: 10px; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 8px; }
-.proven-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
-.proven-num { font-size: clamp(28px, 3vw, 40px); font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -0.03em; margin-bottom: 4px; }
-
-/* ─── PARTNERS ───────────────────────────────────────── */
-#partners { background: var(--bg-dim); overflow: hidden; padding: 120px 0; position: relative; isolation: isolate; }
-#partners .section-header { padding: 0 64px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; }
-@media (max-width: 768px) { #partners .section-header { padding: 0 24px; } }
-
-.cert-badges { display: flex; gap: 12px; flex-wrap: wrap; }
-.cert-badge {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-  border: 1px solid var(--border); padding: 8px 14px;
-  color: var(--muted); display: flex; align-items: center; gap: 8px;
-}
-.cert-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
-
-.partners-scroll {
-  display: flex; gap: 2px; overflow-x: auto; padding: 60px 64px 0;
-  scroll-snap-type: x mandatory;
-}
-.partners-scroll::-webkit-scrollbar { height: 2px; }
-.partners-scroll::-webkit-scrollbar-thumb { background: var(--gold-dim); }
-@media (max-width: 768px) { .partners-scroll { padding: 40px 24px 0; } }
-
-.partner-card {
-  flex-shrink: 0; width: 220px; height: 120px;
-  background: var(--surface); border-left: 2px solid rgba(201,168,76,0.2);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-  opacity: 0.4; filter: grayscale(1);
-  transition: opacity var(--dur-base) var(--ease-standard), filter var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard), background var(--dur-base) var(--ease-standard);
-  scroll-snap-align: start; cursor: none;
-}
-.partner-card:hover { opacity: 1; filter: grayscale(0); border-color: var(--gold); transform: translateY(-4px); background: var(--surface-hi); }
-.partner-logo { max-width: 120px; max-height: 44px; object-fit: contain; filter: brightness(0) invert(1); }
-.partner-name {
-  font-family: var(--mono); font-size: 13px; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--white);
-}
-.partner-country { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-
-/* ─── VISION 2030 ────────────────────────────────────── */
-#vision { background: var(--bg); }
-.vision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 64px; margin-top: 72px; }
-@media (max-width: 900px) { .vision-grid { grid-template-columns: 1fr; gap: 48px; } }
-.vision-item {}
-.vision-num { font-size: clamp(52px, 6vw, 80px); font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -0.04em; margin-bottom: 24px; }
-.vision-title { font-size: 14px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 6px; }
-.vision-ar { font-family: var(--arabic); font-size: 13px; color: var(--gold); opacity: 0.7; margin-bottom: 20px; direction: rtl; text-align: left; }
-.vision-body { font-size: 14px; color: var(--muted); line-height: 1.7; }
-
-/* ─── CONTACT ────────────────────────────────────────── */
-#contact { background: var(--bg-dim); border-top: 1px solid var(--border); padding: 120px 64px; }
-@media (max-width: 768px) { #contact { padding: 80px 24px; } }
-.contact-label { margin-bottom: 20px; }
-.contact-headline { font-size: clamp(40px, 6vw, 80px); font-weight: 900; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 80px; line-height: 0.9; }
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-@media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
-.contact-panel { padding: 56px 64px 56px 0; display: flex; flex-direction: column; justify-content: space-between; min-height: 320px; }
-.contact-panel.right { padding: 56px 0 56px 64px; border-left: 1px solid var(--gold); }
-@media (max-width: 768px) {
-  .contact-panel { padding: 40px 0; }
-  .contact-panel.right { padding: 40px 0; border-left: none; border-top: 1px solid var(--gold); }
-}
-.contact-type { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-.contact-title { font-size: clamp(28px, 3.5vw, 44px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.95; }
-.contact-desc-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-.contact-email {
-  font-size: clamp(18px, 2.2vw, 26px); font-weight: 300; color: var(--white);
-  text-decoration: none; transition: color var(--dur-fast) var(--ease-soft), gap var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft);
-  display: inline-flex; align-items: center; gap: 12px;
-}
-.contact-email:hover { color: var(--gold); gap: 18px; transform: translateX(2px); }
-
-/* ─── FOOTER ─────────────────────────────────────────── */
-footer { background: var(--bg-dim); padding: 72px 64px 48px; border-top: 1px solid var(--border); }
-@media (max-width: 768px) { footer { padding: 48px 24px 36px; } }
-.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 64px; margin-bottom: 64px; }
-@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; gap: 40px; } }
-.footer-logo-en { font-size: 24px; font-weight: 900; letter-spacing: 0.14em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
-.footer-tagline { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); line-height: 1.8; }
-.footer-col-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-.footer-links { display: flex; flex-direction: column; gap: 12px; }
-.footer-links a { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color var(--dur-fast) var(--ease-soft), transform var(--dur-fast) var(--ease-soft); }
-.footer-links a:hover { color: var(--white); transform: translateX(3px); }
-.footer-bottom { border-top: 1px solid var(--border); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 16px; }
-.footer-copy { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
-
-/* ─── SECTION DIVIDER LINE ───────────────────────────── */
-.gold-rule { height: 1px; background: var(--border); margin: 0 64px; }
-@media (max-width: 768px) { .gold-rule { margin: 0 24px; } }
-
-/* ─── ANIMATED LINE ACCENT ───────────────────────────── */
-.line-accent {
-  width: 40px; height: 1px; background: var(--gold); display: inline-block;
-  vertical-align: middle; margin-right: 16px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-  .hero-grid,
-  .scroll-line,
-  .ticker-track { animation: none !important; }
-  .reveal,
-  .hero-label,
-  .hero-subtitle,
-  .stats-row,
-  .hero-ctas,
-  .scroll-hint { opacity: 1 !important; transform: none !important; }
-}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}.rv,.hero-lr,.hero-sub,.hero-stats,.hero-ctas,.hero-scroll{opacity:1!important;transform:none!important}.hero-wi{transform:none!important}}
 </style>
 </head>
 <body>
+<div id="cur"></div><div id="cur-g"></div>
 
-<!-- Custom Cursor -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
-<!-- ═══ NAV ═══════════════════════════════════════════ -->
+<!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nav-logo">
-    <span class="nav-logo-en">TAKWEEN</span>
-    <span class="nav-logo-ar">تكوين تقنيات</span>
-  </a>
+  <a href="#" class="nav-logo"><span class="nav-logo-en">Takween</span><span class="nav-logo-sub">Technologies</span></a>
   <div class="nav-links">
-    <a href="#pillars" class="active">SERVICES</a>
-    <a href="#proven">HERITAGE</a>
-    <a href="#partners">PARTNERS</a>
-    <a href="#vision">VISION 2030</a>
+    <a href="#pillars">Services</a>
+    <a href="#proven">Heritage</a>
+    <a href="#team">Leadership</a>
+    <a href="#partners">Partners</a>
+    <a href="#vision">Vision 2030</a>
   </div>
-  <a href="#contact" class="nav-cta">CONTACT</a>
+  <a href="#contact" class="btn">Contact</a>
 </nav>
 
-<!-- ═══ HERO ═══════════════════════════════════════════ -->
+<!-- HERO with Shader D — Vertical Aurora Columns -->
 <section id="hero">
-  <div class="hero-bg">
-    <video autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-      <source src="12832029_1990_1080_24fps.mp4" type="video/mp4"/>
-    </video>
-  </div>
-  <div class="hero-vignette"></div>
-  <div class="hero-grid"></div>
-
-  <div class="scroll-hint">
-    <div class="scroll-hint-label">Scroll</div>
-    <div class="scroll-line"></div>
-  </div>
-
-  <div class="hero-content">
-    <div class="label hero-label">من التكوين، تنطلق المنظومة</div>
-
-    <h1 class="display-xl" id="hero-headline" aria-label="Where Infrastructure Thinks"></h1>
-
-    <p class="hero-subtitle">
-      Data Centre Intelligence &amp; Autonomous Robotics<br/>for the Kingdom of Saudi Arabia.
-    </p>
-
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-num" id="stat-0">10+</div>
-        <div class="stat-label">OEM Partners</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" id="stat-1">32</div>
-        <div class="stat-label">Robot Models</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" id="stat-2">6</div>
-        <div class="stat-label">Industries</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" id="stat-3">99.999%</div>
-        <div class="stat-label">Uptime Record</div>
-      </div>
+  <canvas id="shader"></canvas>
+  <div class="hero-over"></div>
+  <div class="hero-scroll"><span class="hero-scroll-t">Scroll</span><span class="hero-scroll-l"></span></div>
+  <div class="hero-ct">
+    <div class="hero-lr"><span class="hero-ll"></span><span class="t-label">Infrastructure Intelligence</span></div>
+    <h1 class="t-hero hero-hl" id="hero-hl" aria-label="Where Infrastructure Thinks"></h1>
+    <p class="hero-sub">Data Centre Intelligence, Autonomous Robotics &amp; Critical Infrastructure for the Kingdom of Saudi Arabia.</p>
+    <div class="hero-stats">
+      <div><div class="hs-num" data-count="40" data-suffix="M+">40M+</div><div class="hs-lab">Visitors Monitored</div></div>
+      <div><div class="hs-num" data-count="300" data-suffix="+">300+</div><div class="hs-lab">Sensors Deployed</div></div>
+      <div><div class="hs-num" data-count="28" data-suffix="">28</div><div class="hs-lab">Olympic Venues</div></div>
+      <div><div class="hs-num" data-count="37" data-suffix="">37</div><div class="hs-lab">Metro Stations</div></div>
     </div>
-
     <div class="hero-ctas">
-      <a href="#pillars" class="cta-link">
-        Explore Our Capabilities <span class="cta-arrow">→</span>
-      </a>
-      <a href="#contact" class="cta-link secondary">
-        Start a Conversation <span class="cta-arrow">→</span>
-      </a>
+      <a href="#pillars" class="btn">Explore Capabilities <span style="opacity:.6">→</span></a>
+      <a href="#contact" class="btn-o">Start a Conversation <span style="opacity:.4">→</span></a>
     </div>
   </div>
 </section>
 
-<!-- ═══ TICKER ══════════════════════════════════════════ -->
-<div id="ticker" class="section-transition">
-  <div class="ticker-track" id="ticker-track">
-    <!-- items injected by JS -->
-  </div>
-</div>
+<!-- TICKER -->
+<div id="ticker"><div class="tk-track" id="tk"></div></div>
 
-<!-- ═══ TWO PILLARS ══════════════════════════════════════ -->
-<section id="pillars" class="section">
-  <div class="section-header reveal">
-    <div class="label" style="margin-bottom:16px">ركيزتان أساسيتان</div>
-    <h2 class="display-lg">Three Pillars of<br/>Excellence</h2>
+<!-- PILLARS -->
+<section id="pillars" class="sec">
+  <div class="container sec-hd rv">
+    <span class="t-label" style="display:block;margin-bottom:16px">Three Pillars</span>
+    <h2 class="t-lg">Three Pillars of<br/><span class="t-gi">Excellence</span></h2>
   </div>
-
-  <!-- Pillar 1: Data Centres -->
-  <div class="pillar">
-    <div class="pillar-image dark-video reveal" style="transition-delay:0.25s">
-      <video autoplay muted loop playsinline preload="metadata">
-        <source src="20591257-hd_1920_1080_60fps.mp4" type="video/mp4"/>
-      </video>
-    </div>
-    <div class="pillar-content reveal" style="transition-delay:0.1s">
-      <div class="pillar-name">Data Centre Services</div>
-      <div class="pillar-ar">خدمات مراكز البيانات</div>
-      <div class="service-list">
-        <div class="service-item">
-          <span class="service-num">01</span>
-          <span class="service-name">Workforce Solutions</span>
-          <span class="service-desc">Certified engineers for mission-critical facilities</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">02</span>
-          <span class="service-name">Operations &amp; Maintenance</span>
-          <span class="service-desc">Proactive programs maximising uptime</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">03</span>
-          <span class="service-name">Commissioning &amp; Validation</span>
-          <span class="service-desc">End-to-end systems validation</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">04</span>
-          <span class="service-name">Audit &amp; Certification</span>
-          <span class="service-desc">Uptime Institute &amp; BICSI compliance</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Pillar 2: Robotics -->
-  <div class="pillar">
-    <div class="pillar-image reveal" style="transition-delay:0.1s">
-      <video autoplay muted loop playsinline preload="metadata">
-        <source src="13814803_3840_2160_100fps.mp4" type="video/mp4"/>
-      </video>
-    </div>
-    <div class="pillar-content reveal" style="transition-delay:0.25s">
-      <div class="pillar-name">Intelligent Robotics</div>
-      <div class="pillar-ar">الروبوتات الذكية</div>
-      <div class="service-list">
-        <div class="service-item">
-          <span class="service-num">01</span>
-          <span class="service-name">Hospitality &amp; F&amp;B</span>
-          <span class="service-desc">Autonomous service robots for hotels &amp; events</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">02</span>
-          <span class="service-name">Logistics &amp; Warehousing</span>
-          <span class="service-desc">AMR fleets for sorting &amp; fulfilment</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">03</span>
-          <span class="service-name">Commercial Cleaning</span>
-          <span class="service-desc">AI-powered floor care at scale</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">04</span>
-          <span class="service-name">Security &amp; Patrol</span>
-          <span class="service-desc">Autonomous patrol with advanced sensing</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Pillar 3: Critical Infrastructure -->
-  <div class="pillar">
-    <div class="pillar-image dark-video infra-video reveal" style="transition-delay:0.1s">
-      <video autoplay muted loop playsinline preload="metadata">
-        <source src="6216703-uhd_2560_1440_30fps.mp4" type="video/mp4"/>
-      </video>
-    </div>
-    <div class="pillar-content reveal" style="transition-delay:0.25s">
-      <div class="pillar-name">Critical Infrastructure</div>
-      <div class="pillar-ar">البنية التحتية الحرجة</div>
-      <div class="service-list">
-        <div class="service-item">
-          <span class="service-num">01</span>
-          <span class="service-name">Protected Facilities &amp; Bunkers</span>
-          <span class="service-desc">Support for hardened, underground, and fortified operational sites</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">02</span>
-          <span class="service-name">Command &amp; Control Environments</span>
-          <span class="service-desc">Integrated monitoring, systems coordination, and resilient readiness</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">03</span>
-          <span class="service-name">Life-Safety &amp; Continuity Systems</span>
-          <span class="service-desc">Critical power, cooling, environmental control, and operational continuity</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">04</span>
-          <span class="service-name">Security, Access &amp; Surveillance</span>
-          <span class="service-desc">Restricted access, perimeter intelligence, and live situational awareness</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">05</span>
-          <span class="service-name">Commissioning &amp; Resilience Testing</span>
-          <span class="service-desc">Validation for mission-critical performance under demanding conditions</span>
-        </div>
-        <div class="service-item">
-          <span class="service-num">06</span>
-          <span class="service-name">Confidential Program Delivery</span>
-          <span class="service-desc">Controlled execution for sensitive state, strategic, and defense-adjacent assets</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="pil"><div class="pil-media"><video autoplay muted loop playsinline preload="metadata" style="filter:brightness(0.22) saturate(0.7)"><source src="20591257-hd_1920_1080_60fps.mp4" type="video/mp4"/></video></div><div class="pil-in"><div class="rv"><span class="pil-num">01</span><div class="pil-name">Data Centre<br/>Services</div><div class="pil-sub">Mission-Critical Infrastructure</div><p class="pil-desc">Certified engineers and proactive maintenance programs for mission-critical facilities across the Kingdom.</p></div><div class="svc-list rv" style="transition-delay:.15s"><div class="svc"><span class="svc-n">i</span><span class="svc-t">Workforce Solutions</span><span class="svc-d">Certified engineers for mission-critical facilities</span></div><div class="svc"><span class="svc-n">ii</span><span class="svc-t">Operations &amp; Maintenance</span><span class="svc-d">Proactive programs maximising uptime</span></div><div class="svc"><span class="svc-n">iii</span><span class="svc-t">Commissioning &amp; Validation</span><span class="svc-d">End-to-end systems validation</span></div><div class="svc"><span class="svc-n">iv</span><span class="svc-t">Audit &amp; Certification</span><span class="svc-d">Uptime Institute &amp; BICSI compliance</span></div></div></div></div>
+  <div class="pil"><div class="pil-media"><video autoplay muted loop playsinline preload="metadata" style="filter:brightness(0.55) saturate(0.85)"><source src="13814803_3840_2160_100fps.mp4" type="video/mp4"/></video></div><div class="pil-in"><div class="rv"><span class="pil-num">02</span><div class="pil-name">Intelligent<br/>Robotics</div><div class="pil-sub">Autonomous Solutions at Scale</div><p class="pil-desc">Autonomous service robots, AMR fleets, and AI-powered commercial solutions from world-class OEMs.</p></div><div class="svc-list rv" style="transition-delay:.15s"><div class="svc"><span class="svc-n">i</span><span class="svc-t">Hospitality &amp; F&amp;B</span><span class="svc-d">Autonomous service robots for hotels &amp; events</span></div><div class="svc"><span class="svc-n">ii</span><span class="svc-t">Logistics &amp; Warehousing</span><span class="svc-d">AMR fleets for sorting &amp; fulfilment</span></div><div class="svc"><span class="svc-n">iii</span><span class="svc-t">Commercial Cleaning</span><span class="svc-d">AI-powered floor care at scale</span></div><div class="svc"><span class="svc-n">iv</span><span class="svc-t">Security &amp; Patrol</span><span class="svc-d">Autonomous patrol with advanced sensing</span></div></div></div></div>
+  <div class="pil"><div class="pil-media"><video autoplay muted loop playsinline preload="metadata" style="filter:brightness(0.5) saturate(0.8)"><source src="6216703-uhd_2560_1440_30fps.mp4" type="video/mp4"/></video></div><div class="pil-in"><div class="rv"><span class="pil-num">03</span><div class="pil-name">Critical<br/>Infrastructure</div><div class="pil-sub">Sovereign-Grade Protection</div><p class="pil-desc">Protected facilities, command environments, and confidential program delivery for the Kingdom's most sensitive assets.</p></div><div class="svc-list rv" style="transition-delay:.15s"><div class="svc"><span class="svc-n">i</span><span class="svc-t">Protected Facilities &amp; Bunkers</span><span class="svc-d">Hardened, underground operational sites</span></div><div class="svc"><span class="svc-n">ii</span><span class="svc-t">Command &amp; Control</span><span class="svc-d">Integrated monitoring &amp; coordination</span></div><div class="svc"><span class="svc-n">iii</span><span class="svc-t">Life-Safety &amp; Continuity</span><span class="svc-d">Critical power, cooling &amp; environmental control</span></div><div class="svc"><span class="svc-n">iv</span><span class="svc-t">Security, Access &amp; Surveillance</span><span class="svc-d">Perimeter intelligence &amp; situational awareness</span></div><div class="svc"><span class="svc-n">v</span><span class="svc-t">Commissioning &amp; Resilience</span><span class="svc-d">Mission-critical performance validation</span></div><div class="svc"><span class="svc-n">vi</span><span class="svc-t">Confidential Program Delivery</span><span class="svc-d">Sensitive state &amp; defense-adjacent assets</span></div></div></div></div>
 </section>
 
-<!-- ═══ WHERE WE DEPLOY ═══════════════════════════════════ -->
-<section id="deploy" class="section-transition">
-  <div class="section-panel-glow"></div>
-  <div class="section-header reveal">
-    <div class="label" style="margin-bottom:16px">قطاعات التنفيذ</div>
-    <h2 class="display-lg">Where We Deploy</h2>
-    <p style="font-size:14px;color:var(--muted);margin-top:16px;font-family:var(--mono);letter-spacing:0.1em">Real technology operating in real Saudi environments.</p>
+<!-- DEPLOY — Redesigned grid with expandable cards -->
+<section id="deploy" class="sec">
+  <div class="container sec-hd rv">
+    <span class="t-label" style="display:block;margin-bottom:16px">Sectors</span>
+    <h2 class="t-lg">Where We <span class="t-gi">Deploy</span></h2>
+    <p style="font-size:14px;color:var(--muted);margin-top:16px">Real technology operating in real Saudi environments.</p>
   </div>
-
-  <div class="deploy-scroll hide-scroll" id="deploy-scroll">
-    <div class="deploy-card reveal">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_JRC71B8va7MMXil-pCXJMFpLFC034jLbJ8u3nJtndUWUufTCJxLlJhM6ZMDWBzDE5SUx14UNc54lAhw2DhyAefHJCxSKTpHWQ829B926OS8CcnOXAzgAvxHIOAwf8FdJOh_wlxjMjV_4Wj3T-lm5rPMVZlhJ6aI4VDFRcGdjCwkYwj-Q7LJMVmLldOt95Fbl10agqTW7doMvM1-OvtWRQE9XTChXc7lUm9hwcP9I6GrNJyv-F4aLZ1QC8cVnIzz5R5fGpp24mPs" alt="Hospitality"/>
-      <div class="deploy-info">
-        <div class="deploy-ar">ضيافة</div>
-        <div class="deploy-name">Hospitality &amp; Hotels</div>
-      </div>
-    </div>
-    <div class="deploy-card reveal" style="transition-delay:0.08s">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBruAHWOx-INKgXMDlMLhoXc40KKqBxs56fqvdacgT54SNcYaTAIdFocNSmXiXVwIV0k-MrUwWSHEnBG8lYjqjd7TzRp4qi5PszBNPxo1IYb7NFo1t4xMSQuJdtvV5vlWI3Wes6B1uQc7XmqxgdxcwtqHzDI11aEwJ6mHTXsX38P1UsqwgpvYtpdk8qRPk6jtMbFSlzHHg5RBMaH2PgfVGFtEEr2uG5pMymIDsoh48ctiglfNMRDAjWv3hCUDDL822-bK_hmY98l6g" alt="Logistics"/>
-      <div class="deploy-info">
-        <div class="deploy-ar">لوجستيات</div>
-        <div class="deploy-name">Logistics &amp; Fulfilment</div>
-      </div>
-    </div>
-    <div class="deploy-card reveal" style="transition-delay:0.16s">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAayn104mQhDo2weVBHrZKsz-svv03fiC7OS6zMeYBjyz9V5vPHwo0SUkkrOdhXYvP861Vkga7QxpuGB7FF65z8nlo4ndq8YywLOojvOg0s3w-eVt6bwMebAqZzFKVmX9MEe2inL-WRk136W5JsH7Z2tVEwLZ38vMxaIFyYbNLplytMfAFdX3HmtD0vbJlWlklF2XPeUBqEaWF3a-GVF5VdTsPemQ-02Ba7AjSfuX1pkEoEx5SswYQv2QcY78AS32cQF6ZDh0rvNkw" alt="Retail"/>
-      <div class="deploy-info">
-        <div class="deploy-ar">تجارة</div>
-        <div class="deploy-name">Retail &amp; Malls</div>
-      </div>
-    </div>
-    <div class="deploy-card reveal" style="transition-delay:0.24s">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN0ZfaCTM1GMOIM6leSO417G-TGbPBy19la6AuR9-PtaXqPfX6aZtnAC8_C-7bXxOlPUE7CEIpN4sTUUUyad42HMEYXD3moN2STHxC3XUdhzbR4qr7fvLHm9sFlI6xIej4SLIHYr_RgP2B7Zttcq2DNCIoQcpIpjRsfvWvOALW7gkp-61PWndWAmw07vaRlHaT3nuoMj61qjIC9HXFI6euj_2bdmoOvEaaLt4CG6wsPGsjFCPnJdgKjhU9T7qC-3-XztB5cf5_WcY" alt="Data Centres"/>
-      <div class="deploy-info">
-        <div class="deploy-ar">مراكز البيانات</div>
-        <div class="deploy-name">Data Centres</div>
-      </div>
-    </div>
-    <div class="deploy-card reveal" style="transition-delay:0.32s">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3KgB7qQgkC1O8Zxpiec1OxWKKbJ4KulFnWb7M1BukErHgxemaUv0E-MKln9XUAD5PN_VVIC9RQQkf6cKzXUCVZafs7Ph392JaOz0PRih6bnHoQEzsOnGdsm2l9INPbnKcAdrFFAiiVdWXqdIyPdgcJvAtWzOmkQ000Hs-oY16Y2fipAG5JpUA7jxKbo3hj_DPGWDEaQRk0bDpcRbmHez5m9q0zZR4NA9PUsnbRqBVhla7mrZRNWA8bI9NeKyZT6gp-uu9kq90ehw" alt="Healthcare"/>
-      <div class="deploy-info">
-        <div class="deploy-ar">رعاية صحية</div>
-        <div class="deploy-name">Healthcare</div>
-      </div>
-    </div>
-    <div class="deploy-card reveal" style="transition-delay:0.4s">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoVNCRj0eDxKu_fd1Ca2c5Z2yJjUl_BtFguAArVxxWcxRvUJIFWYPnYS9ccGuG6HJnT9x4wjsjdJYOqjt8howk4vIoDSoBzXfFOUNt7GB7rMqjAfA80rg8RPqZ2k96ioTxzFUCSd493XV8IcYwcxOEx4TCKsWWZCgMrXHM_FlgNFSKfByUwlb81D2dK47CWQ--QoSD3gMLpfKAe4UEoM6BEVqvaiA_788_Ztnlr_P3e6_vJ3g9MyScjZTCoDmH5-hEka5mFPdNe0M" alt="Giga-Projects"/>
-      <div class="deploy-info">
-        <div class="deploy-ar">مشاريع كبرى</div>
-        <div class="deploy-name">Giga-Projects</div>
-      </div>
-    </div>
+  <div class="deploy-grid">
+    <div class="deploy-card rv"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_JRC71B8va7MMXil-pCXJMFpLFC034jLbJ8u3nJtndUWUufTCJxLlJhM6ZMDWBzDE5SUx14UNc54lAhw2DhyAefHJCxSKTpHWQ829B926OS8CcnOXAzgAvxHIOAwf8FdJOh_wlxjMjV_4Wj3T-lm5rPMVZlhJ6aI4VDFRcGdjCwkYwj-Q7LJMVmLldOt95Fbl10agqTW7doMvM1-OvtWRQE9XTChXc7lUm9hwcP9I6GrNJyv-F4aLZ1QC8cVnIzz5R5fGpp24mPs" alt="Hospitality" loading="lazy"/><div class="deploy-card-ct"><div class="deploy-card-tag">Hospitality</div><div class="deploy-card-name">Hotels &amp; Events</div><div class="deploy-card-body">Autonomous service delivery, concierge robots, and intelligent room service across premium hospitality environments in the Kingdom.</div><div class="deploy-card-more">Learn more <span>+</span></div></div></div>
+    <div class="deploy-card rv" style="transition-delay:.06s"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBruAHWOx-INKgXMDlMLhoXc40KKqBxs56fqvdacgT54SNcYaTAIdFocNSmXiXVwIV0k-MrUwWSHEnBG8lYjqjd7TzRp4qi5PszBNPxo1IYb7NFo1t4xMSQuJdtvV5vlWI3Wes6B1uQc7XmqxgdxcwtqHzDI11aEwJ6mHTXsX38P1UsqwgpvYtpdk8qRPk6jtMbFSlzHHg5RBMaH2PgfVGFtEEr2uG5pMymIDsoh48ctiglfNMRDAjWv3hCUDDL822-bK_hmY98l6g" alt="Logistics" loading="lazy"/><div class="deploy-card-ct"><div class="deploy-card-tag">Logistics</div><div class="deploy-card-name">Fulfilment &amp; Warehousing</div><div class="deploy-card-body">AMR fleets for automated picking, sorting, and last-mile fulfilment. Deployed across high-volume distribution centres.</div><div class="deploy-card-more">Learn more <span>+</span></div></div></div>
+    <div class="deploy-card rv" style="transition-delay:.12s"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAayn104mQhDo2weVBHrZKsz-svv03fiC7OS6zMeYBjyz9V5vPHwo0SUkkrOdhXYvP861Vkga7QxpuGB7FF65z8nlo4ndq8YywLOojvOg0s3w-eVt6bwMebAqZzFKVmX9MEe2inL-WRk136W5JsH7Z2tVEwLZ38vMxaIFyYbNLplytMfAFdX3HmtD0vbJlWlklF2XPeUBqEaWF3a-GVF5VdTsPemQ-02Ba7AjSfuX1pkEoEx5SswYQv2QcY78AS32cQF6ZDh0rvNkw" alt="Retail" loading="lazy"/><div class="deploy-card-ct"><div class="deploy-card-tag">Retail</div><div class="deploy-card-name">Retail &amp; Malls</div><div class="deploy-card-body">Customer engagement robots, autonomous cleaning fleets, and crowd flow analytics across Saudi Arabia's largest retail destinations.</div><div class="deploy-card-more">Learn more <span>+</span></div></div></div>
+    <div class="deploy-card rv" style="transition-delay:.18s"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN0ZfaCTM1GMOIM6leSO417G-TGbPBy19la6AuR9-PtaXqPfX6aZtnAC8_C-7bXxOlPUE7CEIpN4sTUUUyad42HMEYXD3moN2STHxC3XUdhzbR4qr7fvLHm9sFlI6xIej4SLIHYr_RgP2B7Zttcq2DNCIoQcpIpjRsfvWvOALW7gkp-61PWndWAmw07vaRlHaT3nuoMj61qjIC9HXFI6euj_2bdmoOvEaaLt4CG6wsPGsjFCPnJdgKjhU9T7qC-3-XztB5cf5_WcY" alt="Data Centres" loading="lazy"/><div class="deploy-card-ct"><div class="deploy-card-tag">Data Centres</div><div class="deploy-card-name">Data Centre Operations</div><div class="deploy-card-body">End-to-end facility management, workforce deployment, commissioning, and 24/7 operational support for hyperscale and colocation data centres.</div><div class="deploy-card-more">Learn more <span>+</span></div></div></div>
+    <div class="deploy-card rv" style="transition-delay:.24s"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3KgB7qQgkC1O8Zxpiec1OxWKKbJ4KulFnWb7M1BukErHgxemaUv0E-MKln9XUAD5PN_VVIC9RQQkf6cKzXUCVZafs7Ph392JaOz0PRih6bnHoQEzsOnGdsm2l9INPbnKcAdrFFAiiVdWXqdIyPdgcJvAtWzOmkQ000Hs-oY16Y2fipAG5JpUA7jxKbo3hj_DPGWDEaQRk0bDpcRbmHez5m9q0zZR4NA9PUsnbRqBVhla7mrZRNWA8bI9NeKyZT6gp-uu9kq90ehw" alt="Healthcare" loading="lazy"/><div class="deploy-card-ct"><div class="deploy-card-tag">Healthcare</div><div class="deploy-card-name">Hospitals &amp; Clinics</div><div class="deploy-card-body">Delivery robots for medication transport, sterilisation logistics, and patient-facing service automation across healthcare facilities.</div><div class="deploy-card-more">Learn more <span>+</span></div></div></div>
+    <div class="deploy-card rv" style="transition-delay:.30s"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoVNCRj0eDxKu_fd1Ca2c5Z2yJjUl_BtFguAArVxxWcxRvUJIFWYPnYS9ccGuG6HJnT9x4wjsjdJYOqjt8howk4vIoDSoBzXfFOUNt7GB7rMqjAfA80rg8RPqZ2k96ioTxzFUCSd493XV8IcYwcxOEx4TCKsWWZCgMrXHM_FlgNFSKfByUwlb81D2dK47CWQ--QoSD3gMLpfKAe4UEoM6BEVqvaiA_788_Ztnlr_P3e6_vJ3g9MyScjZTCoDmH5-hEka5mFPdNe0M" alt="Giga-Projects" loading="lazy"/><div class="deploy-card-ct"><div class="deploy-card-tag">Mega-Projects</div><div class="deploy-card-name">Giga-Projects</div><div class="deploy-card-body">Integrated robotics and infrastructure solutions for NEOM, The Red Sea, Diriyah Gate, and other Vision 2030 landmark developments.</div><div class="deploy-card-more">Learn more <span>+</span></div></div></div>
   </div>
 </section>
 
 <!-- PROVEN WHERE IT MATTERS -->
-<section id="proven" class="section section-transition">
-  <div class="section-header reveal">
-    <div class="label" style="margin-bottom:16px">أثبتنا كفاءتنا حيث لا مجال للخطأ</div>
-    <h2 class="display-lg">Proven Where<br/>It Matters</h2>
-    <p style="font-size:14px;color:var(--muted);margin-top:20px;max-width:560px;line-height:1.7">Deployed at the world&#39;s most demanding events and sacred sites &#8212; where every sensor, every fibre, every line of code carries the weight of millions of lives.</p>
+<section id="proven" class="sec" style="padding-bottom:0">
+  <div class="container sec-hd rv">
+    <span class="t-label" style="display:block;margin-bottom:16px">Heritage</span>
+    <h2 class="t-lg">Proven Where<br/><span class="t-gi">It Matters</span></h2>
+    <p style="font-size:16px;color:var(--white-dim);margin-top:20px;max-width:580px;line-height:1.7">Deployed at the world's most demanding events and sacred sites — where every sensor, every fibre, every line of code carries the weight of millions of lives.</p>
   </div>
-
-  <div class="usecase-hero">
-
-    <div class="usecase-featured span2 reveal">
-      <div class="usecase-collage" aria-hidden="true">
-        <div class="usecase-collage-panel">
-          <img src="https://images.pexels.com/photos/3742589/pexels-photo-3742589.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Crowds around the Kaaba in Makkah at night"/>
-        </div>
-        <div class="usecase-collage-panel">
-          <img src="https://images.pexels.com/photos/33169785/pexels-photo-33169785.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Pilgrims gathered at Al-Masjid an-Nabawi in Madinah"/>
-        </div>
-      </div>
-      <div class="usecase-content">
-        <div class="usecase-tag">الحرمين الشريفين &middot; Ongoing &middot; Ramadan &middot; Hajj &middot; Umrah</div>
-        <div class="usecase-title">Makkah &amp; Madinah<br/>Holy Mosques</div>
-        <div class="usecase-sub">المسجد الحرام والمسجد النبوي</div>
-        <div class="usecase-desc">Turnkey crowd intelligence infrastructure at the world&#39;s most visited religious sites. Real-time monitoring across all entrances during Ramadan, Hajj, and Umrah &#8212; in collaboration with the General Authority for the Two Holy Mosques.</div>
-        <div class="usecase-stats">
-          <div class="usecase-stat"><div class="usecase-stat-num">40M+</div><div class="usecase-stat-label">Visitors Counted</div></div>
-          <div class="usecase-stat"><div class="usecase-stat-num">300+</div><div class="usecase-stat-label">Entrances Covered</div></div>
-          <div class="usecase-stat"><div class="usecase-stat-num">30K m</div><div class="usecase-stat-label">Fibre Deployed</div></div>
-          <div class="usecase-stat"><div class="usecase-stat-num">100+</div><div class="usecase-stat-label">Network Switches</div></div>
-        </div>
-        <div class="usecase-caps">
-          <span class="usecase-cap">Crowd Flow Monitoring</span>
-          <span class="usecase-cap">Automated Threshold Alerts</span>
-          <span class="usecase-cap">Command Centre Dashboard</span>
-          <span class="usecase-cap">Private Class C Cloud</span>
-          <span class="usecase-cap">Custom Web Apps</span>
-          <span class="usecase-cap">Turnkey Installation</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="usecase-featured reveal" style="transition-delay:0.1s">
-      <img src="https://images.pexels.com/photos/30651230/pexels-photo-30651230.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Crowded stadium during a major international sports event"/>
-      <div class="usecase-content">
-        <div class="usecase-tag">IOC &middot; COJO &middot; French Government &middot; Paris 2024</div>
-        <div class="usecase-title">Paris 2024<br/>Olympic Games</div>
-        <div class="usecase-sub">دورة الألعاب الأولمبية باريس</div>
-        <div class="usecase-desc">Selected by the IOC and Paris 2024 Organizing Committee. Comprehensive crowd-flow monitoring across all 28 Olympic venues &#8212; competition venues, fan zones, sponsor activations (Coca-Cola), and national hospitality areas. 250+ sensors deployed within one month under extreme deadline pressure.</div>
-        <div class="usecase-stats">
-          <div class="usecase-stat"><div class="usecase-stat-num">10M+</div><div class="usecase-stat-label">Visitors</div></div>
-          <div class="usecase-stat"><div class="usecase-stat-num">28</div><div class="usecase-stat-label">Olympic Venues</div></div>
-          <div class="usecase-stat"><div class="usecase-stat-num">250+</div><div class="usecase-stat-label">Sensors</div></div>
-          <div class="usecase-stat"><div class="usecase-stat-num">90+</div><div class="usecase-stat-label">Live Zones</div></div>
-        </div>
-        <div class="usecase-caps">
-          <span class="usecase-cap">3D Sensors</span>
-          <span class="usecase-cap">UWB Tags</span>
-          <span class="usecase-cap">Counting Mats</span>
-          <span class="usecase-cap">Bespoke Web Apps</span>
-          <span class="usecase-cap">Sensitive Gov Data</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="usecase-featured reveal" style="transition-delay:0.2s">
-      <img src="https://images.pexels.com/photos/18016847/pexels-photo-18016847.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Busy metro platform crowd representing large-scale transport flow"/>
-      <div class="usecase-content">
-        <div class="usecase-tag">FIFA &middot; Qatar Rail &middot; Doha Metro &middot; 2022</div>
-        <div class="usecase-title">FIFA World Cup<br/>Qatar 2022</div>
-        <div class="usecase-sub">كأس العالم فيفا قطر</div>
-        <div class="usecase-desc">Partnered with FIFA and Qatar Rail to deliver advanced people-flow monitoring across the entire Doha metro network and key stadium entrances &#8212; anticipating surge movements and ensuring safe access for 3M+ fans across all 37 metro stations.</div>
-        <div class="usecase-stats">
-          <div class="usecase-stat"><div class="usecase-stat-num">3M+</div><div class="usecase-stat-label">Fans</div></div>
-          <div class="usecase-stat"><div class="usecase-stat-num">37</div><div class="usecase-stat-label">Metro Stations</div></div>
-        </div>
-        <div class="usecase-caps">
-          <span class="usecase-cap">People Flow Monitoring</span>
-          <span class="usecase-cap">Full Metro Network</span>
-          <span class="usecase-cap">Stadium Entrances</span>
-          <span class="usecase-cap">Transport Coordination</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="proven-grid">
-    <div class="proven-card reveal">
-      <div><div class="proven-tag" style="margin-bottom:16px">Total Scale</div><div class="proven-num">53M+</div><div class="proven-title" style="font-size:clamp(14px,1.5vw,18px);margin-top:6px">Visitors Monitored<br/>Across All Deployments</div></div>
-      <div class="proven-body">Paris Olympics. FIFA World Cup. Haramain. The same proven platform at the world&#39;s most demanding gatherings.</div>
-    </div>
-    <div class="proven-card reveal" style="transition-delay:0.1s">
-      <div><div class="proven-tag" style="margin-bottom:16px">Deployment Speed</div><div class="proven-num">30</div><div class="proven-title" style="font-size:clamp(14px,1.5vw,18px);margin-top:6px">Days to Deploy<br/>250+ Sensors Live</div></div>
-      <div class="proven-body">Olympic-grade deadlines. Incomplete infrastructure. Numerous contractors. Zero failures. This is what operational excellence looks like.</div>
-    </div>
-    <div class="proven-card reveal" style="transition-delay:0.2s">
-      <div><div class="proven-tag" style="margin-bottom:16px">Government Cleared</div><div class="proven-num">GOV</div><div class="proven-title" style="font-size:clamp(14px,1.5vw,18px);margin-top:6px">Trusted with Sensitive<br/>State-Level Data</div></div>
-      <div class="proven-body">French Government. IOC. FIFA. Qatar Rail. Saudi General Authority. We handle the data that cannot fail &#8212; ever.</div>
-    </div>
-    <div class="proven-card reveal" style="transition-delay:0.3s">
-      <div><div class="proven-tag" style="margin-bottom:16px">FIFA 2034 &middot; KSA Next</div><div class="proven-num">2034</div><div class="proven-title" style="font-size:clamp(14px,1.5vw,18px);margin-top:6px">The Only Local Partner<br/>With Global Proof</div></div>
-      <div class="proven-body">Qatar 2022. Paris 2024. Haramain. We are the only intelligence infrastructure company in Saudi Arabia with verified deployments at this scale.</div>
-    </div>
-  </div>
-
+  <div class="uc-feat rv" style="min-height:620px"><div class="uc-collage" aria-hidden="true"><div class="uc-collage-p"><img src="https://images.pexels.com/photos/3742589/pexels-photo-3742589.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Makkah" loading="lazy"/></div><div class="uc-collage-p"><img src="https://images.pexels.com/photos/33169785/pexels-photo-33169785.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Madinah" loading="lazy"/></div></div><div class="uc-ct"><div class="uc-tag">Haramain · Ongoing · Ramadan · Hajj · Umrah</div><div class="uc-title">Makkah &amp; Madinah<br/>Holy Mosques</div><div class="uc-body">Turnkey crowd intelligence infrastructure at the world's most visited religious sites. Real-time monitoring across all entrances during Ramadan, Hajj, and Umrah — in collaboration with the General Authority for the Two Holy Mosques.</div><div class="uc-stats"><div><div class="ucs-n">40M+</div><div class="ucs-l">Visitors Counted</div></div><div><div class="ucs-n">300+</div><div class="ucs-l">Entrances Covered</div></div><div><div class="ucs-n">30K m</div><div class="ucs-l">Fibre Deployed</div></div><div><div class="ucs-n">100+</div><div class="ucs-l">Network Switches</div></div></div><div class="uc-caps"><span class="uc-cap">Crowd Flow Monitoring</span><span class="uc-cap">Automated Threshold Alerts</span><span class="uc-cap">Command Centre Dashboard</span><span class="uc-cap">Private Class C Cloud</span><span class="uc-cap">Custom Web Apps</span><span class="uc-cap">Turnkey Installation</span></div></div></div>
+  <div class="uc-duo"><div class="uc-card rv"><div class="uc-card-m"><img src="https://images.pexels.com/photos/30651230/pexels-photo-30651230.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Olympics" loading="lazy"/></div><div class="uc-card-ct"><div class="uc-tag">IOC · COJO · French Government · Paris 2024</div><div class="uc-title" style="font-size:clamp(26px,3.5vw,44px)">Paris 2024<br/>Olympic Games</div><div class="uc-body" style="font-size:13px">Selected by the IOC and Paris 2024 Organizing Committee. 250+ sensors deployed within 30 days across all 28 Olympic venues.</div><div class="uc-stats"><div><div class="ucs-n">10M+</div><div class="ucs-l">Visitors</div></div><div><div class="ucs-n">28</div><div class="ucs-l">Venues</div></div><div><div class="ucs-n">250+</div><div class="ucs-l">Sensors</div></div></div></div></div><div class="uc-card rv" style="transition-delay:.12s"><div class="uc-card-m"><img src="https://images.pexels.com/photos/18016847/pexels-photo-18016847.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Metro" loading="lazy"/></div><div class="uc-card-ct"><div class="uc-tag">FIFA · Qatar Rail · Doha Metro · 2022</div><div class="uc-title" style="font-size:clamp(26px,3.5vw,44px)">FIFA World Cup<br/>Qatar 2022</div><div class="uc-body" style="font-size:13px">Advanced people-flow monitoring across the Doha metro network and key stadium entrances for 3M+ fans.</div><div class="uc-stats"><div><div class="ucs-n">3M+</div><div class="ucs-l">Fans</div></div><div><div class="ucs-n">37</div><div class="ucs-l">Metro Stations</div></div></div></div></div></div>
+  <div class="pf-grid"><div class="sp-card rv"><div><div class="pf-tag">Total Scale</div><div class="pf-num">53M+</div><div class="pf-title">Visitors Monitored<br/>Across All Deployments</div></div><div class="pf-body">Paris Olympics. FIFA World Cup. Haramain. The same proven platform at the world's most demanding gatherings.</div></div><div class="sp-card rv" style="transition-delay:.08s"><div><div class="pf-tag">Deployment Speed</div><div class="pf-num">30</div><div class="pf-title">Days to Deploy<br/>250+ Sensors Live</div></div><div class="pf-body">Olympic-grade deadlines. Incomplete infrastructure. Zero failures. Operational excellence.</div></div><div class="sp-card rv" style="transition-delay:.16s"><div><div class="pf-tag">Government Cleared</div><div class="pf-num" style="font-size:clamp(24px,3vw,36px)">GOV</div><div class="pf-title">Trusted with Sensitive<br/>State-Level Data</div></div><div class="pf-body">French Government. IOC. FIFA. Qatar Rail. Saudi General Authority. Data that cannot fail — ever.</div></div><div class="sp-card rv" style="transition-delay:.24s"><div><div class="pf-tag">FIFA 2034 · KSA</div><div class="pf-num">2034</div><div class="pf-title">The Only Local Partner<br/>With Global Proof</div></div><div class="pf-body">The only intelligence infrastructure company in Saudi Arabia with verified deployments at this scale.</div></div></div>
 </section>
 
-
-<!-- ═══ TECHNOLOGY PARTNERS ══════════════════════════════ -->
-<section id="partners" class="section-transition">
-  <div class="section-panel-glow"></div>
-  <div class="section-header reveal">
-    <div>
-      <div class="label" style="margin-bottom:16px">الشركاء التقنيون</div>
-      <h2 class="display-md">Technology Partners</h2>
-      <p style="font-size:13px;color:var(--muted);margin-top:12px;font-family:var(--mono);letter-spacing:0.08em">World-class OEMs. Local expertise. One trusted partner.</p>
+<!-- TEAM / LEADERSHIP -->
+<section id="team" class="sec">
+  <div class="container">
+    <div class="sec-hd rv">
+      <span class="t-label" style="display:block;margin-bottom:16px">Leadership</span>
+      <h2 class="t-lg">The Team Behind<br/><span class="t-gi">the Vision</span></h2>
     </div>
-    <div class="cert-badges">
-      <div class="cert-badge"><span class="cert-dot"></span>Uptime Institute Certified</div>
-      <div class="cert-badge"><span class="cert-dot"></span>BICSI Certified</div>
-    </div>
-  </div>
-
-  <div class="partners-scroll hide-scroll" id="partners-scroll">
-    <div class="partner-card reveal">
-      <img class="partner-logo" src="https://www.pudurobotics.com/logo.svg" alt="Pudu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-      <div class="partner-name">PUDU</div>
-      <div class="partner-country">China · Hospitality</div>
-    </div>
-    <div class="partner-card reveal" style="transition-delay:0.07s">
-      <img class="partner-logo" src="https://static.keenon.com/assets/images/common/logo-gray.webp" alt="Keenon" onerror="this.style.display='none'"/>
-      <div class="partner-name">KEENON</div>
-      <div class="partner-country">China · F&amp;B Robotics</div>
-    </div>
-    <div class="partner-card reveal" style="transition-delay:0.14s">
-      <img class="partner-logo" src="https://www.geekplus.com/hs-fs/hubfs/geek+%20logo%20transparent-1.png?width=200&height=76" alt="Geek+" onerror="this.style.display='none'"/>
-      <div class="partner-name">GEEK+</div>
-      <div class="partner-country">China · Logistics AMR</div>
-    </div>
-    <div class="partner-card reveal" style="transition-delay:0.21s">
-      <img class="partner-logo" src="https://www.forwardx.com/wp-content/uploads/2023/01/logo-606_228.png" alt="ForwardX" onerror="this.style.display='none'"/>
-      <div class="partner-name">FORWARDX</div>
-      <div class="partner-country">China · Warehouse AMR</div>
-    </div>
-    <div class="partner-card reveal" style="transition-delay:0.28s">
-      <img class="partner-logo" src="https://gausium.com/wp-content/uploads/2022/04/Gausium-logo-horizontal-white.svg" alt="Gausium" onerror="this.style.display='none'"/>
-      <div class="partner-name">GAUSIUM</div>
-      <div class="partner-country">China · Cleaning Robots</div>
-    </div>
-    <div class="partner-card reveal" style="transition-delay:0.35s">
-      <img class="partner-logo" src="https://www.lionsbot.com/wp-content/uploads/2021/07/logo.png" alt="LionsBot" onerror="this.style.display='none'"/>
-      <div class="partner-name">LIONSBOT</div>
-      <div class="partner-country">Singapore · Cleaning</div>
-    </div>
-    <div class="partner-card reveal" style="transition-delay:0.42s">
-      <img class="partner-logo" src="https://knightscope.com/hubfs/Logo%20-%202025/KSCP-Logo-V2-Horizontal-White%20(1).svg" alt="Knightscope" onerror="this.style.display='none'"/>
-      <div class="partner-name">KNIGHTSCOPE</div>
-      <div class="partner-country">USA · Security Patrol</div>
-    </div>
-    <div class="partner-card reveal" style="transition-delay:0.49s">
-      <div class="partner-name">RICHTECH</div>
-      <div class="partner-country">USA · Service Robots</div>
-    </div>
-    <div class="partner-card reveal" style="transition-delay:0.56s">
-      <div class="partner-name">AVIDBOTS</div>
-      <div class="partner-country">Canada · Facility AMR</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ VISION 2030 ══════════════════════════════════════ -->
-<section id="vision" class="section section-transition">
-  <div class="section-header reveal">
-    <div class="label" style="margin-bottom:16px">قيَّمنا لرؤية ٢٠٣٠</div>
-    <h2 class="display-lg">Built for<br/>Vision 2030</h2>
-    <p style="font-size:14px;color:var(--muted);margin-top:20px;max-width:560px;line-height:1.7">Every service we deliver is architected to advance the Kingdom's transformation agenda.</p>
-  </div>
-  <div class="vision-grid">
-    <div class="vision-item reveal">
-      <div class="vision-num">01</div>
-      <div class="vision-title">Mega-Project Ready</div>
-      <div class="vision-ar">جاهزون للمشاريع العملاقة</div>
-      <div class="vision-body">Scaled to support NEOM, The Red Sea, Diriyah, and other giga-projects with proven delivery frameworks and full-stack operational capability.</div>
-    </div>
-    <div class="vision-item reveal" style="transition-delay:0.15s">
-      <div class="vision-num">02</div>
-      <div class="vision-title">Saudization &amp; Workforce</div>
-      <div class="vision-ar">السعودة وتنمية القوى العاملة</div>
-      <div class="vision-body">Active Nitaqat compliance with structured Saudi talent development programs building local technical leadership across all disciplines.</div>
-    </div>
-    <div class="vision-item reveal" style="transition-delay:0.3s">
-      <div class="vision-num">03</div>
-      <div class="vision-title">Regulatory Compliance</div>
-      <div class="vision-ar">الامتثال التنظيمي</div>
-      <div class="vision-body">Full alignment with CITC, NCA, and MISA requirements from day one. Data sovereignty and infrastructure safety standards exceeded.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ CONTACT ═══════════════════════════════════════════ -->
-<section id="contact" class="section-transition">
-  <div class="contact-label label">لنبدأ الحوار</div>
-  <h2 class="contact-headline">Start the<br/>Conversation</h2>
-  <div class="contact-grid">
-    <div class="contact-panel reveal">
-      <div>
-        <div class="contact-type">OEM &amp; Technology</div>
-        <div class="contact-title">For Technology<br/>Partners</div>
+    <div class="team-grid">
+      <div class="team-card rv">
+        <img src="team/mohammed-hafiz.png" alt="Mohammed Hafiz" class="team-img" loading="lazy"/>
+        <div class="team-info">
+          <div class="team-name">Mohammed Hafiz</div>
+          <div class="team-role">Founder &amp; Chairman</div>
+          <div class="team-bio">A Saudi business leader and technology strategist driving the Kingdom's most ambitious innovation initiatives. Through Takween Technologies, he leads the development of AI-powered smart sensor systems for real-time crowd monitoring across Makkah and Madinah — safeguarding millions of pilgrims annually. He also brought teamLab to Jeddah, reinforcing Saudi Arabia's position as a global destination for technology-driven innovation. Previously CEO of the Al Sawani Group (2005–2020), he holds board positions at the Madina Art Center, the Misk Art Institute, and Dar Al Fikr Schools. Co-founder of Athr Gallery and the Athr Foundation.</div>
+          <div class="team-expand">Read bio <span>+</span></div>
+        </div>
       </div>
-      <div>
-        <div class="contact-desc-label">Global Partnership Desk</div>
-        <a href="mailto:partners@takween.sa" class="contact-email">partners@takween.sa  <span style="opacity:0.5">→</span></a>
+      <div class="team-card rv" style="transition-delay:.1s">
+        <img src="team/otman-ben-fradj.jpg" alt="Otman Ben Fradj" class="team-img" loading="lazy"/>
+        <div class="team-info">
+          <div class="team-name">Otman Ben Fradj</div>
+          <div class="team-role">Co-Founder &amp; COO</div>
+          <div class="team-bio">A technology and operations strategist with over 19 years of experience delivering complex, high-stakes projects for governments, international organizations, and global institutions. He leads operational deployment of AI-powered smart sensor systems across Makkah and Madinah, and spearheaded smart monitoring across stadiums and metro stations during the FIFA World Cup Qatar 2022. Career spans PublicisLive, Havas Group, and Hopscotch Group — directing operations for the World Economic Forum, Paris 2024 Olympic Ceremonies, and Noor Riyadh. Degree in Marketing &amp; Communication from SAWI, Lausanne.</div>
+          <div class="team-expand">Read bio <span>+</span></div>
+        </div>
       </div>
-    </div>
-    <div class="contact-panel right reveal" style="transition-delay:0.15s">
-      <div>
-        <div class="contact-type">Enterprise</div>
-        <div class="contact-title">For Saudi<br/>Enterprises</div>
-      </div>
-      <div>
-        <div class="contact-desc-label">Regional Operations Desk</div>
-        <a href="mailto:info@takween.sa" class="contact-email">info@takween.sa <span style="opacity:0.5">→</span></a>
+      <div class="team-card rv" style="transition-delay:.2s">
+        <img src="team/taoufiq-mohamed.png" alt="Taoufiq Mohamed" class="team-img" loading="lazy"/>
+        <div class="team-info">
+          <div class="team-name">Taoufiq Mohamed</div>
+          <div class="team-role">Co-Founder &amp; CEO, Takween Robotics</div>
+          <div class="team-bio">A technology executive and climate specialist with deep expertise across energy, sustainability, and infrastructure intelligence. Former Sustainability Strategy Specialist and Asset Manager at QatarEnergy, where he shaped climate strategies, managed multi-billion-dollar downstream assets, and presented Qatar's NDC to the UNFCCC. Prior career at Technip as Refining &amp; Consulting Technology Manager, leading feasibility studies and techno-economic evaluations across the MENA region. PhD in Chemical Engineering from University College London, MEng from Imperial College London, and a Stanford certification in Renewable Technologies.</div>
+          <div class="team-expand">Read bio <span>+</span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ FOOTER ════════════════════════════════════════════ -->
+<!-- PARTNERS — Technology Ecosystem -->
+<section id="partners" class="sec">
+  <div class="container">
+    <div class="sec-hd rv">
+      <span class="t-label" style="display:block;margin-bottom:16px">Technology Ecosystem</span>
+      <h2 class="t-md">Technology <span class="t-gi">Partners</span></h2>
+      <p style="font-size:14px;color:var(--muted);margin-top:12px;max-width:480px">World-class technology partnerships across every pillar of our business — from spatial intelligence to data centre operations.</p>
+    </div>
+    <div class="part-section">
+      <div class="part-section-label">Crowd Intelligence &amp; Spatial Data</div>
+      <div class="part-row">
+        <div class="part-c rv"><div class="part-n">Technis</div><div class="part-co">Switzerland · Spatial Intelligence</div></div>
+      </div>
+    </div>
+    <div class="part-section">
+      <div class="part-section-label">Data Centre &amp; Network Infrastructure</div>
+      <div class="part-row">
+        <div class="part-c rv"><div class="part-n">SD Consortium</div><div class="part-co">Saudi Arabia · IT &amp; Network</div></div>
+      </div>
+    </div>
+    <div class="part-section">
+      <div class="part-section-label">Robotics &amp; Automation OEMs</div>
+      <div class="part-row">
+        <div class="part-c rv"><div class="part-n">Hospitality</div><div class="part-co">Service &amp; F&amp;B Robots</div></div>
+        <div class="part-c rv" style="transition-delay:.06s"><div class="part-n">Logistics</div><div class="part-co">AMR &amp; Warehouse Fleets</div></div>
+        <div class="part-c rv" style="transition-delay:.12s"><div class="part-n">Cleaning</div><div class="part-co">Commercial Floor Care</div></div>
+        <div class="part-c rv" style="transition-delay:.18s"><div class="part-n">Security</div><div class="part-co">Autonomous Patrol</div></div>
+        <div class="part-c rv" style="transition-delay:.24s"><div class="part-n">General Purpose</div><div class="part-co">Facility &amp; Service AMRs</div></div>
+      </div>
+    </div>
+    <div style="margin-top:40px;padding:24px 0;border-top:1px solid var(--border)">
+      <p style="font-size:12px;color:var(--dim);line-height:1.7;max-width:480px">Takween maintains exclusive distribution agreements with leading robotics OEMs across hospitality, logistics, commercial cleaning, and security verticals. Partner details shared under NDA during commercial engagement.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VISION 2030 -->
+<section id="vision" class="sec">
+  <div class="container">
+    <div class="sec-hd rv"><span class="t-label" style="display:block;margin-bottom:16px">Alignment</span><h2 class="t-lg">Built for<br/><span class="t-gi">Vision 2030</span></h2><p style="font-size:16px;color:var(--white-dim);margin-top:20px;max-width:560px;line-height:1.7">Every service we deliver is architected to advance the Kingdom's transformation agenda.</p></div>
+    <div class="vis-grid">
+      <div class="vis-i rv"><div class="vis-num">01</div><div class="vis-t">Mega-Project Ready</div><div class="vis-body">Scaled to support NEOM, The Red Sea, Diriyah, and other giga-projects with proven delivery frameworks and full-stack operational capability.</div></div>
+      <div class="vis-i rv" style="transition-delay:.12s"><div class="vis-num">02</div><div class="vis-t">Saudization &amp; Workforce</div><div class="vis-body">Active Nitaqat compliance with structured Saudi talent development programs building local technical leadership across all disciplines.</div></div>
+      <div class="vis-i rv" style="transition-delay:.24s"><div class="vis-num">03</div><div class="vis-t">Regulatory Compliance</div><div class="vis-body">Full alignment with CITC, NCA, and MISA requirements from day one. Data sovereignty and infrastructure safety standards exceeded.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="sec">
+  <div class="container">
+    <div class="rv"><span class="t-label" style="display:block;margin-bottom:16px">Get in Touch</span><h2 class="t-lg con-hl">Start the<br/><span class="t-gi">Conversation</span></h2></div>
+    <div class="con-grid">
+      <div class="con-p rv"><div><div class="con-type">Technology Partners</div><div class="con-title">For Technology<br/>Partners</div></div><div><div class="con-el">Global Partnership Desk</div><a href="mailto:partners@takween.sa" class="con-email">partners@takween.sa <span style="opacity:.4">→</span></a></div></div>
+      <div class="con-p r rv" style="transition-delay:.12s"><div><div class="con-type">Enterprise</div><div class="con-title">For Saudi<br/>Enterprises</div></div><div><div class="con-el">Regional Operations Desk</div><a href="mailto:info@takween.sa" class="con-email">info@takween.sa <span style="opacity:.4">→</span></a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  <div class="footer-grid">
-    <div>
-      <div class="footer-logo-en">TAKWEEN</div>
-      <div style="font-family:var(--arabic);font-size:13px;color:var(--gold);opacity:0.6;margin-bottom:20px;direction:rtl">تكوين تقنيات</div>
-      <div class="footer-tagline">
-        Headquarters: Riyadh,<br/>Kingdom of Saudi Arabia.<br/><br/>
-        Infrastructure Intelligence<br/>for the Digital Kingdom.
-      </div>
+  <div class="container">
+    <div class="ft-grid">
+      <div><div class="ft-logo">Takween</div><div class="ft-tag">Headquarters: Riyadh,<br/>Kingdom of Saudi Arabia.<br/><br/>Infrastructure Intelligence<br/>for the Digital Kingdom.</div></div>
+      <div><div class="ft-cl">Navigate</div><div class="ft-links"><a href="#pillars">Services</a><a href="#proven">Heritage</a><a href="#team">Leadership</a><a href="#partners">Partners</a><a href="#vision">Vision 2030</a><a href="#contact">Contact</a></div></div>
+      <div><div class="ft-cl">Legal</div><div class="ft-links"><a href="/privacy-policy">Privacy Policy</a><a href="/terms-of-service">Terms of Service</a><a href="/data-protection">Data Protection</a></div></div>
     </div>
-    <div>
-      <div class="footer-col-label">Navigate</div>
-      <div class="footer-links">
-        <a href="#pillars">Services</a>
-        <a href="#proven">Heritage</a>
-        <a href="#partners">Partners</a>
-        <a href="#vision">Vision 2030</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </div>
-    <div>
-      <div class="footer-col-label">Legal</div>
-      <div class="footer-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Data Protection</a>
-      </div>
-      <div style="margin-top:32px">
-        <div class="footer-col-label">Connect</div>
-        <div class="footer-links">
-          
-          
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© 2025 Takween Technologies · All rights reserved · جميع الحقوق محفوظة</div>
-    <div class="footer-copy" style="color:var(--gold);opacity:0.4">RIYADH · KSA</div>
+    <div class="ft-bot"><div class="ft-copy">&copy; 2025 Takween Technologies &middot; All rights reserved</div><div class="ft-copy" style="color:var(--gold);opacity:.35">RIYADH &middot; KSA</div></div>
   </div>
 </footer>
 
-<!-- ════════════════════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════════════════════ -->
 <script>
-/* ── CURSOR ─────────────────────────────────────────────── */
-const cursor = document.getElementById('cursor');
-const ring   = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-(function animCursor() {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  cursor.style.left = mx + 'px';
-  cursor.style.top  = my + 'px';
-  ring.style.left = rx + 'px';
-  ring.style.top  = ry + 'px';
-  requestAnimationFrame(animCursor);
+/* ═══ SHADER D — Vertical Aurora Columns with cursor interaction ═══ */
+(function(){
+const c=document.getElementById('shader'),gl=c.getContext('webgl',{alpha:true,antialias:false});
+if(!gl)return;
+function resize(){const d=Math.min(devicePixelRatio,2);c.width=c.clientWidth*d;c.height=c.clientHeight*d;gl.viewport(0,0,c.width,c.height)}
+resize();addEventListener('resize',resize);
+const vs=`attribute vec2 a;void main(){gl_Position=vec4(a,0,1);}`;
+const fs=`precision mediump float;
+uniform float t;uniform vec2 r;uniform vec2 m;
+vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;}
+vec2 mod289(vec2 x){return x-floor(x*(1./289.))*289.;}
+vec3 permute(vec3 x){return mod289(((x*34.)+1.)*x);}
+float snoise(vec2 v){const vec4 C=vec4(.211324865405187,.366025403784439,-.577350269189626,.024390243902439);vec2 i=floor(v+dot(v,C.yy));vec2 x0=v-i+dot(i,C.xx);vec2 i1=(x0.x>x0.y)?vec2(1,0):vec2(0,1);vec4 x12=x0.xyxy+C.xxzz;x12.xy-=i1;i=mod289(i);vec3 p=permute(permute(i.y+vec3(0,i1.y,1))+i.x+vec3(0,i1.x,1));vec3 mm=max(.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.);mm=mm*mm;mm=mm*mm;vec3 x=2.*fract(p*C.www)-1.;vec3 h=abs(x)-.5;vec3 ox=floor(x+.5);vec3 a0=x-ox;mm*=1.79284291400159-.85373472095314*(a0*a0+h*h);vec3 g;g.x=a0.x*x0.x+h.x*x0.y;g.yz=a0.yz*x12.xz+h.yz*x12.yw;return 130.*dot(mm,g);}
+void main(){vec2 uv=gl_FragCoord.xy/r;vec2 asp=vec2(r.x/r.y,1.);vec2 p=uv*asp;float T=t*.08;
+vec2 mo=m*asp;float mDist=length(p-mo);float mField=smoothstep(.5,0.,mDist);float mX=smoothstep(.3,0.,abs(p.x-mo.x));
+float col1=0.,col2=0.,col3=0.;
+float sway1=snoise(vec2(p.x*3.,T*.3))*.08;float cursorPull=(mo.x-p.x)*mX*.08;float xPos1=p.x+sway1+cursorPull;float n1=snoise(vec2(xPos1*6.,T*.2));float w1=.04+mField*.06;col1=smoothstep(w1,0.,abs(n1))*.8;float yM1=smoothstep(0.,.3,uv.y)*smoothstep(1.,.5,uv.y);float yN1=snoise(vec2(p.x*4.,p.y*1.5+T*.4))*.5+.5;col1*=yM1*(.6+yN1*.4)*(1.+mField*.8);
+float sway2=snoise(vec2(p.x*5.+3.,T*.5))*.05;float cp2=(mo.x-p.x)*mX*.05;float xP2=p.x+sway2+cp2;float n2=snoise(vec2(xP2*10.,T*.35+5.));float w2=.025+mField*.04;col2=smoothstep(w2,0.,abs(n2-.15))*.5;col2*=smoothstep(.1,.5,uv.y)*smoothstep(.95,.4,uv.y)*(1.+mField*.6);
+float sway3=snoise(vec2(p.x*8.+7.,T*.7))*.03;float n3=snoise(vec2((p.x+sway3)*18.,T*.5+10.));col3=smoothstep(.015+mField*.02,0.,abs(n3))*.25;col3*=smoothstep(.2,.6,uv.y)*smoothstep(.9,.3,uv.y);
+float ambient=snoise(vec2(p.x*2.,T*.15))*.5+.5;ambient*=smoothstep(0.,.4,uv.y)*smoothstep(1.,.6,uv.y)*.04;
+float scanSpeed=2.+mField*3.;float scanline=smoothstep(.003,0.,abs(fract(uv.y*80.+T*scanSpeed)-.5)-.48)*(.08+mField*.12);scanline*=smoothstep(0.,.3,uv.y)*smoothstep(1.,.7,uv.y);
+float beam=smoothstep(.06,0.,abs(p.x-mo.x))*.15;beam*=smoothstep(0.,.2,uv.y)*smoothstep(1.,.8,uv.y);
+float node=smoothstep(.04,0.,mDist)*.25;
+float vig=1.-smoothstep(.35,.95,length(vec2((uv.x-.5)*1.5,uv.y-.5)));
+float I=(col1+col2+col3+ambient+scanline+beam+node)*vig;
+vec3 gold=vec3(.792,.541,.016);vec3 goldLt=vec3(.898,.725,.306);
+vec3 color=mix(gold,goldLt,(col1+col3+beam)*.4)*I;
+color+=vec3(1.,.95,.85)*(pow(max(col1,0.),3.)*.15+node*.5);
+gl_FragColor=vec4(color,I*.85);}`;
+function mkS(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){gl.deleteShader(s);return null}return s}
+const v=mkS(gl.VERTEX_SHADER,vs),f=mkS(gl.FRAGMENT_SHADER,fs);if(!v||!f)return;
+const pg=gl.createProgram();gl.attachShader(pg,v);gl.attachShader(pg,f);gl.linkProgram(pg);
+if(!gl.getProgramParameter(pg,gl.LINK_STATUS))return;gl.useProgram(pg);
+const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+const al=gl.getAttribLocation(pg,'a');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+const ut=gl.getUniformLocation(pg,'t'),ur=gl.getUniformLocation(pg,'r'),um=gl.getUniformLocation(pg,'m');
+let mx=.5,my=.5;document.addEventListener('mousemove',e=>{mx=e.clientX/innerWidth;my=1-e.clientY/innerHeight});
+gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+const s0=performance.now();let run=true;
+new IntersectionObserver(([e])=>{run=e.isIntersecting},{threshold:0.1}).observe(c);
+(function draw(){if(run){const T=(performance.now()-s0)/1000;gl.uniform1f(ut,T);gl.uniform2f(ur,c.width,c.height);gl.uniform2f(um,mx,my);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}requestAnimationFrame(draw)})();
 })();
-document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; ring.style.opacity = '0'; });
-document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; ring.style.opacity = '1'; });
 
-/* ── NAV SCROLL ─────────────────────────────────────────── */
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 80);
-}, { passive: true });
+/* ═══ CURSOR ═══ */
+(function(){if(matchMedia('(pointer:coarse)').matches)return;const c=document.getElementById('cur'),g=document.getElementById('cur-g');let mx=0,my=0,gx=0,gy=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});(function l(){gx+=(mx-gx)*.1;gy+=(my-gy)*.1;c.style.left=mx+'px';c.style.top=my+'px';g.style.left=gx+'px';g.style.top=gy+'px';requestAnimationFrame(l)})();document.addEventListener('mouseleave',()=>{c.style.opacity='0';g.style.opacity='0'});document.addEventListener('mouseenter',()=>{c.style.opacity='1';g.style.opacity='1'})})();
 
-/* ── TICKER BUILD ───────────────────────────────────────── */
-const items = [
-  'Arab News','Forbes Middle East','LEAP 2025','GITEX Global',
-  'Al Arabiya Business','Saudi Gazette','Bloomberg Arabia',
-  'MIT Technology Review MENA','Vision 2030 Official','Zawya','Muqtaham',
-];
-const track = document.getElementById('ticker-track');
-const full = [...items, ...items, ...items, ...items];
-track.innerHTML = full.map(i =>
-  `<span class="ticker-item"><span class="ticker-dot"></span>${i}</span>`
-).join('');
+/* ═══ SPOTLIGHT CARDS ═══ */
+document.querySelectorAll('.sp-card').forEach(c=>{c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')})});
 
-/* ── HERO HEADLINE SPLIT & ANIMATE ──────────────────────── */
-const words = ['Where', 'Infrastructure', 'Thinks'];
-const hl = document.getElementById('hero-headline');
-hl.innerHTML = words.map(w =>
-  `<span class="hero-word"><span class="hero-word-inner">${w}</span></span> `
-).join('');
+/* ═══ GSAP ═══ */
+addEventListener('DOMContentLoaded',()=>{
+if(typeof gsap==='undefined')return;
+gsap.registerPlugin(ScrollTrigger);gsap.defaults({ease:'expo.out',duration:1});
+const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>80)},{passive:true});
 
-gsap.registerPlugin(ScrollTrigger);
-gsap.defaults({ ease: 'power3.out', duration: 0.9 });
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Ticker
+const ti=['Haramain','Paris 2024 Olympics','FIFA World Cup','Technis','SD Consortium','Vision 2030','LEAP','GITEX Global','Forbes Middle East','Noor Riyadh'];
+const tk=document.getElementById('tk');
+tk.innerHTML=[...ti,...ti,...ti,...ti].map(i=>`<span class="tk-item"><span class="tk-dot"></span>${i}</span>`).join('');
 
-// Hero entrance sequence
-if (reduceMotion) {
-  gsap.set(['.hero-word-inner', '.hero-label', '.hero-subtitle', '.stats-row', '.hero-ctas', '.scroll-hint'], { clearProps: 'all', opacity: 1, y: 0 });
-} else {
-  const tl = gsap.timeline({ delay: 0.24 });
-  tl.to('.hero-word-inner', {
-    y: 0, duration: 1.15, ease: 'expo.out',
-    stagger: 0.085
-  })
-  .to('.hero-label', { opacity: 1, y: 0, duration: 0.72 }, '-=0.62')
-  .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.82 }, '-=0.54')
-  .to('.stats-row', { opacity: 1, y: 0, duration: 0.72 }, '-=0.46')
-  .to('.hero-ctas', { opacity: 1, y: 0, duration: 0.64 }, '-=0.34')
-  .to('.scroll-hint', { opacity: 1, duration: 0.64 }, '-=0.24');
-}
+// Hero headline
+const words=['Where','Infrastructure','Thinks'];
+const hl=document.getElementById('hero-hl');
+hl.innerHTML=words.map(w=>`<span class="hero-w"><span class="hero-wi">${w}</span></span>`).join(' ');
 
-/* ── COUNTUP STATS ──────────────────────────────────────── */
-const statConfigs = [
-  { id: 'stat-0', end: 10, suffix: '+', decimal: 0 },
-  { id: 'stat-1', end: 32, suffix: '', decimal: 0 },
-  { id: 'stat-2', end: 6,  suffix: '', decimal: 0 },
-  { id: 'stat-3', end: 99.999, suffix: '%', decimal: 3 },
-];
+if(rm){gsap.set(['.hero-wi','.hero-lr','.hero-sub','.hero-stats','.hero-ctas','.hero-scroll'],{clearProps:'all',opacity:1,y:0})}
+else{const tl=gsap.timeline({delay:.3});tl.to('.hero-wi',{y:0,duration:1.3,stagger:.1,ease:'expo.out'}).to('.hero-lr',{opacity:1,y:0,duration:.8},'-=.8').to('.hero-sub',{opacity:1,y:0,duration:.8},'-=.6').to('.hero-stats',{opacity:1,y:0,duration:.7},'-=.5').to('.hero-ctas',{opacity:1,y:0,duration:.7},'-=.4').to('.hero-scroll',{opacity:1,duration:.7},'-=.3')}
 
-let statsTriggered = false;
-if (!reduceMotion) {
-  ScrollTrigger.create({
-    trigger: '.stats-row',
-    start: 'top 80%',
-    onEnter: () => {
-      if (statsTriggered) return;
-      statsTriggered = true;
-      statConfigs.forEach(cfg => {
-        const el = document.getElementById(cfg.id);
-        if (!el) return;
-        const cu = new countUp.CountUp(cfg.id, cfg.end, {
-          duration: 2.2,
-          decimalPlaces: cfg.decimal,
-          suffix: cfg.suffix,
-          useEasing: true,
-          useGrouping: false,
-        });
-        cu.start();
-      });
-    }
-  });
-}
+// CountUp
+if(!rm){let done=false;ScrollTrigger.create({trigger:'.hero-stats',start:'top 80%',onEnter:()=>{if(done)return;done=true;document.querySelectorAll('.hs-num').forEach(el=>{const end=parseFloat(el.dataset.count),suf=el.dataset.suffix||'',dec=parseInt(el.dataset.dec)||0,dur=2200,s=performance.now();(function u(n){const p=Math.min((n-s)/dur,1),e=1-Math.pow(1-p,4);el.textContent=(end*e).toFixed(dec)+suf;if(p<1)requestAnimationFrame(u)})(performance.now())})}})}
 
-/* ── SECTION REVEALS (ScrollTrigger) ────────────────────── */
-if (!reduceMotion) {
-  document.querySelectorAll('.reveal').forEach(el => {
-    gsap.fromTo(el,
-      { opacity: 0, y: 60 },
-      {
-        opacity: 1, y: 0,
-        duration: 0.96,
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 88%',
-          once: true,
-        }
-      }
-    );
-  });
-}
+// Reveals
+if(!rm){document.querySelectorAll('.rv').forEach(el=>{gsap.to(el,{opacity:1,y:0,duration:.9,scrollTrigger:{trigger:el,start:'top 88%',once:true}})})}
 
-/* ── DEPLOY SCROLL DRAG ─────────────────────────────────── */
-function makeDraggable(el) {
-  let isDown = false, startX, scrollLeft;
-  el.addEventListener('mousedown', e => {
-    isDown = true; startX = e.pageX - el.offsetLeft; scrollLeft = el.scrollLeft;
-    el.style.cursor = 'grabbing';
-  });
-  el.addEventListener('mouseleave', () => { isDown = false; el.style.cursor = ''; });
-  el.addEventListener('mouseup', () => { isDown = false; el.style.cursor = ''; });
-  el.addEventListener('mousemove', e => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - el.offsetLeft;
-    el.scrollLeft = scrollLeft - (x - startX) * 1.4;
-  });
-}
-makeDraggable(document.getElementById('deploy-scroll'));
-makeDraggable(document.getElementById('partners-scroll'));
+// Parallax
+if(!rm){gsap.to('#shader',{yPercent:15,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:.5}});document.querySelectorAll('.pil-media video').forEach(m=>{gsap.fromTo(m,{yPercent:-6},{yPercent:6,ease:'none',scrollTrigger:{trigger:m.closest('.pil'),start:'top bottom',end:'bottom top',scrub:.6}})})}
 
-/* ── NAV ACTIVE LINK ON SCROLL ──────────────────────────── */
-const sections = ['pillars','proven','partners','vision','contact'];
-const navLinks = document.querySelectorAll('.nav-links a');
-sections.forEach(id => {
-  ScrollTrigger.create({
-    trigger: '#' + id,
-    start: 'top center',
-    end: 'bottom center',
-    onToggle: self => {
-      navLinks.forEach(a => {
-        a.classList.toggle('active', self.isActive && a.getAttribute('href') === '#' + id);
-      });
-    }
-  });
-});
+// Active nav
+['pillars','proven','team','partners','vision','contact'].forEach(id=>{const links=document.querySelectorAll('.nav-links a');ScrollTrigger.create({trigger:'#'+id,start:'top center',end:'bottom center',onToggle:s=>{links.forEach(a=>{a.classList.toggle('active',s.isActive&&a.getAttribute('href')==='#'+id)})}})});
 
-/* ── PARALLAX HERO BG ───────────────────────────────────── */
-if (!reduceMotion) {
-  gsap.to('.hero-bg', {
-    yPercent: 20,
-    ease: 'none',
-    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
-  });
-}
+// Drag scroll
+function drag(el){if(!el)return;let d=false,sx,sl;el.addEventListener('mousedown',e=>{d=true;sx=e.pageX-el.offsetLeft;sl=el.scrollLeft});el.addEventListener('mouseleave',()=>d=false);el.addEventListener('mouseup',()=>d=false);el.addEventListener('mousemove',e=>{if(!d)return;e.preventDefault();el.scrollLeft=sl-(e.pageX-el.offsetLeft-sx)*1.4})}
 
-/* ── PILLAR IMAGE PARALLAX ──────────────────────────────── */
-if (!reduceMotion) {
-  document.querySelectorAll('.pillar-image img, .pillar-image video').forEach(media => {
-    gsap.fromTo(media,
-      { yPercent: -8 },
-      { yPercent: 8, ease: 'none',
-        scrollTrigger: { trigger: media.parentElement, start: 'top bottom', end: 'bottom top', scrub: 0.7 }
-      }
-    );
-  });
-}
-
-document.querySelectorAll('.infra-video video').forEach(video => {
-  video.addEventListener('loadedmetadata', () => {
-    if (video.duration > 2) video.currentTime = 2;
-  }, { once: true });
+document.querySelectorAll('.pil-media video').forEach(v=>{v.addEventListener('loadedmetadata',()=>{if(v.duration>3)v.currentTime=Math.random()*3},{once:true})});
 });
 </script>
 </body>
