@@ -25,7 +25,7 @@ export function Spotlight({ className, size = 400 }: SpotlightProps) {
       if (parent) {
         parent.style.position = 'relative'
         parent.style.overflow = 'hidden'
-        setParentElement(parent)
+        setTimeout(() => setParentElement(parent), 0)
       }
     }
   }, [])

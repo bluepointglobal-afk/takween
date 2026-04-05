@@ -11,7 +11,7 @@ const cases = [
     title: 'Makkah & Madinah',
     subtitle: 'Holy Mosques',
     ar: 'المسجد الحرام والمسجد النبوي',
-    desc: 'Turnkey crowd intelligence infrastructure at the world\'s most visited religious sites. Real-time monitoring across all entrances during Ramadan, Hajj, and Umrah.',
+    desc: "Turnkey crowd intelligence infrastructure at the world's most visited religious sites. Real-time monitoring across all entrances during Ramadan, Hajj, and Umrah.",
     image: 'https://images.pexels.com/photos/3742589/pexels-photo-3742589.jpeg?auto=compress&cs=tinysrgb&w=1600',
     stats: [
       { value: '40M+', label: 'Visitors Counted' },
@@ -145,7 +145,7 @@ export default function ProvenSection() {
             transition={{ delay: 0.2 }}
             className="text-white/30 max-w-xl text-base leading-relaxed"
           >
-            Deployed at the world's most demanding events and sacred sites — where every sensor, every fibre, every line of code carries the weight of millions of lives.
+            Deployed at the world&apos;s most demanding events and sacred sites — where every sensor, every fibre, every line of code carries the weight of millions of lives.
           </motion.p>
         </div>
 

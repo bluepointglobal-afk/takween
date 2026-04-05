@@ -17,7 +17,10 @@ export function AnimatedCounter({ value, className }: AnimatedCounterProps) {
     if (!isInView) return
     const num = parseFloat(value.replace(/[^0-9.]/g, ''))
     const suffix = value.replace(/[0-9.]/g, '')
-    if (isNaN(num)) { setDisplayed(value); return }
+    if (isNaN(num)) {
+      setTimeout(() => setDisplayed(value), 0)
+      return
+    }
 
     const duration = 1800
     const start = Date.now()

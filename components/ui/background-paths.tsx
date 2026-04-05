@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion'
 
+const PATH_DURATIONS = Array.from({ length: 24 }, (_, i) => 18 + (i * 7919 % 12))
+
 function FloatingPaths({ position }: { position: number }) {
   const paths = Array.from({ length: 24 }, (_, i) => ({
     id: i,
@@ -21,7 +23,7 @@ function FloatingPaths({ position }: { position: number }) {
             strokeOpacity={0.04 + path.id * 0.015}
             initial={{ pathLength: 0.3, opacity: 0.4 }}
             animate={{ pathLength: 1, opacity: [0.2, 0.5, 0.2], pathOffset: [0, 1, 0] }}
-            transition={{ duration: 18 + Math.random() * 12, repeat: Infinity, ease: 'linear' }}
+            transition={{ duration: PATH_DURATIONS[path.id], repeat: Infinity, ease: 'linear' }}
           />
         ))}
       </svg>

@@ -100,7 +100,7 @@ export default function ContactSection() {
                 <div>
                   <div className="text-[#CA8A04] text-4xl mb-4">✓</div>
                   <div className="text-white font-black text-xl mb-2">Message Received</div>
-                  <div className="text-white/40 text-sm">We'll be in touch within 24 hours.</div>
+                  <div className="text-white/40 text-sm">We&apos;ll be in touch within 24 hours.</div>
                 </div>
               </div>
             ) : (
